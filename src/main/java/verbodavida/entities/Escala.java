@@ -19,11 +19,15 @@ import javax.persistence.TemporalType;
 )
 public class Escala  implements java.io.Serializable {
 
-
-     private int idescala;
-     private long grupoHasPessoaPessoaIdpessoa;
-     private long grupoHasPessoaGrupoIdgrupo;
-     private Date dataescala;
+	private static final long serialVersionUID = 1L;
+	
+	private int idescala;
+    
+	private long grupoHasPessoaPessoaIdpessoa;
+    
+    private long grupoHasPessoaGrupoIdgrupo;
+    
+    private Date dataescala;
 
     public Escala() {
     }

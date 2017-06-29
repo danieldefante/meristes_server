@@ -1,15 +1,18 @@
 package verbodavida.controllers;
 
-public interface IController {
+import java.util.List;
 
-	String insert(String data);
+public interface IController<T> {
+
+	String insert(T entity);
 	
-	String update(String data);
+	String update(T entity);
 	
-	String delete(String data);
+	String delete(Long id);
 
-	String find(String data);
+	T find(Long id);
 
-	String findAll(String data);
+	List<T> findAll();
 	
 }
+  

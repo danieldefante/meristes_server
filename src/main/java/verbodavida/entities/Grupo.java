@@ -19,11 +19,15 @@ import javax.persistence.Table;
 )
 public class Grupo  implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	private int idgrupo;
+    
+	private Ministerio ministerio;
+    
+    private String nome;
 
-     private int idgrupo;
-     private Ministerio ministerio;
-     private String nome;
-     private String descricao;
+    private String descricao;
 
     public Grupo() {
     }

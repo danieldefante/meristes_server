@@ -1,4 +1,4 @@
-package verbodavida.service;
+package verbodavida.utils;
 
 public interface IService {
 
