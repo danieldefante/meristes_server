@@ -1,4 +1,4 @@
-package verbodavida.eao;
+package verbodavida.eaos;
 
 public class MinisterioEAO extends IEAO{
 

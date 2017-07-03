@@ -1,20 +1,27 @@
 package verbodavida.controllers;
 
-import java.util.List;
-import verbodavida.eao.MinisterioEAO;
-import verbodavida.entities.Ministerio;
+import static verbodavida.dtos.ConverterEntity.converterEntetyToListVO;
+import static verbodavida.dtos.ConverterEntity.converterEntity;
 
-public class MinisterioController implements IController<Ministerio>{
+import java.util.List;
+
+import verbodavida.dtos.MinisterioDTO;
+import verbodavida.eaos.MinisterioEAO;
+import verbodavida.entities.Ministerio;
+import verbodavida.vos.MinisterioVO;
+
+public class MinisterioController implements IController<MinisterioDTO, MinisterioVO>{
 
 	private MinisterioEAO ministerioEAO = new MinisterioEAO();
 
 	@Override
-	public String insert(Ministerio ministerio) {
-		return ministerioEAO.insert(ministerio);
+	public String insert(MinisterioDTO ministerio) {
+		return ministerioEAO.insert(
+				converterEntity(Ministerio.class, ministerio));
 	}
 
 	@Override
-	public String update(Ministerio ministerio) {
+	public String update(MinisterioDTO ministerio) {
 		return ministerioEAO.update(ministerio);
 	}
 
@@ -24,13 +31,17 @@ public class MinisterioController implements IController<Ministerio>{
 	}
 
 	@Override
-	public Ministerio find(Long id) {
-		return ministerioEAO.find(Ministerio.class, id);
+	public MinisterioDTO find(Long id) {
+		 return converterEntity(
+				 MinisterioDTO.class,
+				 ministerioEAO.find(Ministerio.class, id));
 	}
 
 	@Override
-	public List<Ministerio> findAll() {
-		return ministerioEAO.findAll(Ministerio.class);
+	public List<MinisterioVO> findAll() {
+		return converterEntetyToListVO(
+				MinisterioVO.class, 
+				ministerioEAO.findAll(Ministerio.class));
 	}
 
 }

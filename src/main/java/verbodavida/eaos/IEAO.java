@@ -1,4 +1,4 @@
-package verbodavida.eao;
+package verbodavida.eaos;
 
 import static verbodavida.utils.PersistDB.findEntity;
 import static verbodavida.utils.PersistDB.findAllEntity;

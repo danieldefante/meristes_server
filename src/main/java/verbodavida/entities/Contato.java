@@ -1,19 +1,17 @@
 package verbodavida.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="contato", schema="public")
-public class Contato  implements java.io.Serializable {
+public class Contato  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 	
@@ -29,27 +27,13 @@ public class Contato  implements java.io.Serializable {
      
     private String email;
      
-    @JsonIgnore
-    private Set<Pessoa> pessoas = new HashSet<Pessoa>(0);
+//    private Set<Pessoa> pessoas = new HashSet<Pessoa>(0);
 
     public Contato() {
     }
-	
-    public Contato(Long idContato) {
-        this.idContato = idContato;
-    }
-
-    public Contato(Long idContato, String celular, String celularTwo, String telefone, String telefoneTwo, String email, Set<Pessoa> pessoas) {
-       this.idContato = idContato;
-       this.celular = celular;
-       this.celularTwo = celularTwo;
-       this.telefone = telefone;
-       this.telefoneTwo = telefoneTwo;
-       this.email = email;
-       this.pessoas = pessoas;
-    }
    
     @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idcontato", unique=true, nullable=false)
     public Long getIdContato() {
         return this.idContato;
@@ -104,15 +88,16 @@ public class Contato  implements java.io.Serializable {
         this.email = email;
     }
 
-    @JsonIgnore
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="contato")
-    public Set<Pessoa> getPessoas() {
-        return this.pessoas;
-    }
-    
-    public void setPessoas(Set<Pessoa> pessoas) {
-        this.pessoas = pessoas;
-    }
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @JsonIgnore
+//    @OneToMany(fetch=FetchType.LAZY, mappedBy="contato")
+//    public Set<Pessoa> getPessoas() {
+//        return this.pessoas;
+//    }
+//    
+//    public void setPessoas(Set<Pessoa> pessoas) {
+//        this.pessoas = pessoas;
+//    }
 
 }
 

@@ -1,18 +1,16 @@
 package verbodavida.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="endereco", schema="public")
-public class Endereco  implements java.io.Serializable {
+public class Endereco  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -28,27 +26,13 @@ public class Endereco  implements java.io.Serializable {
      
     private String complemento;
      
-    @JsonIgnore
-    private Set<Pessoa> pessoas = new HashSet<Pessoa>(0);
+//    private Set<Pessoa> pessoas = new HashSet<Pessoa>(0);
 
     public Endereco() {
     }
 	
-    public Endereco(Long idendereco) {
-        this.idEndereco = idendereco;
-    }
-
-    public Endereco(Long idEndereco, String rua, int numero, String cep, String bairro, String complemento, Set<Pessoa> pessoas) {
-       this.idEndereco = idEndereco;
-       this.rua = rua;
-       this.numero = numero;
-       this.cep = cep;
-       this.bairro = bairro;
-       this.complemento = complemento;
-       this.pessoas = pessoas;
-    }
-   
     @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idendereco", unique=true, nullable=false)
     public Long getIdEndereco() {
         return this.idEndereco;
@@ -103,15 +87,16 @@ public class Endereco  implements java.io.Serializable {
         this.complemento = complemento;
     }
 
-    @JsonIgnore
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="endereco")
-    public Set<Pessoa> getPessoas() {
-        return this.pessoas;
-    }
-    
-    public void setPessoas(Set<Pessoa> pessoas) {
-        this.pessoas = pessoas;
-    }
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @JsonIgnore
+//    @OneToMany(fetch=FetchType.LAZY, mappedBy="endereco")
+//    public Set<Pessoa> getPessoas() {
+//        return this.pessoas;
+//    }
+//    
+//    public void setPessoas(Set<Pessoa> pessoas) {
+//        this.pessoas = pessoas;
+//    }
 
 }
 

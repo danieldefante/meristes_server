@@ -1,21 +1,27 @@
 package verbodavida.controllers;
 
-import java.util.List;
-import verbodavida.eao.PessoaEAO;
-import verbodavida.entities.Pessoa;
+import static verbodavida.dtos.ConverterEntity.converterEntetyToListVO;
+import static verbodavida.dtos.ConverterEntity.converterEntity;
 
-public class PessoaController implements IController<Pessoa> {
+import java.util.List;
+
+import verbodavida.dtos.PessoaDTO;
+import verbodavida.eaos.PessoaEAO;
+import verbodavida.entities.Pessoa;
+import verbodavida.vos.PessoaVO;
+
+public class PessoaController implements IController<PessoaDTO, PessoaVO> {
 
 	private PessoaEAO pessoaEAO = new PessoaEAO();
 	
 	@Override
-	public String insert(Pessoa pessoa) {
-		return pessoaEAO.insert(pessoa);
+	public String insert(PessoaDTO pessoa) {
+		return pessoaEAO.insert(converterEntity(Pessoa.class, pessoa));
 	}
 
 	@Override
-	public String update(Pessoa pessoa) {
-		return pessoaEAO.update(pessoa);
+	public String update(PessoaDTO pessoa) {
+		return pessoaEAO.update(converterEntity(Pessoa.class, pessoa));
 	}
 
 	@Override
@@ -24,12 +30,17 @@ public class PessoaController implements IController<Pessoa> {
 	}
 
 	@Override
-	public Pessoa find(Long id) {
-		return pessoaEAO.find(Pessoa.class, id);
+	public PessoaDTO find(Long id) {
+		return converterEntity(
+				PessoaDTO.class,
+				pessoaEAO.find(Pessoa.class, id));
 	}
 
 	@Override
-	public List<Pessoa> findAll() {
-		return pessoaEAO.findAll(Pessoa.class);
+	public List<PessoaVO> findAll() {
+		
+		return converterEntetyToListVO(
+				PessoaVO.class,
+				pessoaEAO.findAll(Pessoa.class));
 	}
 }

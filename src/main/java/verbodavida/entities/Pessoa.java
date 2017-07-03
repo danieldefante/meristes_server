@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,23 +36,9 @@ public class Pessoa  implements Serializable {
 
     public Pessoa() {
     }
-
-	
-    public Pessoa(Long idPessoa, Contato contato, Endereco endereco) {
-        this.idPessoa = idPessoa;
-        this.contato = contato;
-        this.endereco = endereco;
-    }
-    public Pessoa(Long idPessoa, Contato contato, Endereco endereco, String nome, String sobrenome, Date dataNascimento) {
-       this.idPessoa = idPessoa;
-       this.contato = contato;
-       this.endereco = endereco;
-       this.nome = nome;
-       this.sobrenome = sobrenome;
-       this.dataNascimento = dataNascimento;
-    }
    
-    @Id 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idpessoa", unique=true, nullable=false)
     public Long getIdPessoa() {
         return this.idPessoa;
@@ -60,7 +48,9 @@ public class Pessoa  implements Serializable {
         this.idPessoa = idPessoa;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="contato_idcontato", nullable=false)
     public Contato getContato() {
         return this.contato;
@@ -70,7 +60,10 @@ public class Pessoa  implements Serializable {
         this.contato = contato;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//  @JsonIgnore
+//    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="endereco_idendereco", nullable=false)
     public Endereco getEndereco() {
         return this.endereco;
