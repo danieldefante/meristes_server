@@ -1,11 +1,9 @@
-package verbodavida.dtos;
+package verbodavida.vos;
 
-public class GrupoDTO {
+public class ClassificacaoMembroVO {
 
 	private Long idGrupo;
     
-	private Long idMinisterio;
-	
     private String nome;
 
     private String descricao;
@@ -18,14 +16,6 @@ public class GrupoDTO {
 		this.idGrupo = idGrupo;
 	}
 
-	public Long getIdMinisterio() {
-		return idMinisterio;
-	}
-	
-	public void setIdMinisterio(Long idMinisterio) {
-		this.idMinisterio = idMinisterio;
-	}
-	
 	public String getNome() {
 		return nome;
 	}

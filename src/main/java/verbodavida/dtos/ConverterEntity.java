@@ -7,11 +7,11 @@ import org.modelmapper.ModelMapper;
 
 public class ConverterEntity {
 	
-	public static <T,R> R converterEntity(Class<R> clazz, T entity) {
+	public static <T,R> R converterDTO(Class<R> clazz, T entity) {
 		return new ModelMapper().map(entity, clazz);
 	}
 
-	public static <T,R> List<R> converterEntetyToListVO(Class<R> clazz, List<T> entitys) {
+	public static <T,R> List<R> converterDTOList(Class<R> clazz, List<T> entitys) {
 		
 		List<R> listReturn = new ArrayList<R>();
 		ModelMapper modelMapper = new ModelMapper();

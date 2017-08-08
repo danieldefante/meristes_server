@@ -1,4 +1,4 @@
-package verbodavida.services;
+package verbodavida.resouceconfig;
 
 import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -12,6 +12,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class ApplicationConfig extends ResourceConfig {
 
     public ApplicationConfig() {
-        packages("servicesimpl");
+        packages("resouces");
     }
 }

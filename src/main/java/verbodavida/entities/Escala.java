@@ -17,18 +17,11 @@ import javax.persistence.TemporalType;
 public class Escala  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
 	private Long idEscala;
-    
-	private Long grupoHasPessoaPessoaIdPessoa;
-    
-    private Long grupoHasPessoaGrupoIdGrupo;
-    
-    private Date dataEscala;
+    private Long grupoHasPessoaPessoaIdpessoa;
+    private Long grupoHasPessoaGrupoIdgrupo;
+    private Date dataescala;
 
-    public Escala() {
-    }
-     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idescala", unique=true, nullable=false)
@@ -39,34 +32,35 @@ public class Escala  implements Serializable {
     public void setIdEscala(Long idEscala) {
         this.idEscala = idEscala;
     }
-    
+
     @Column(name="grupo_has_pessoa_pessoa_idpessoa", nullable=false)
-    public Long getGrupoHasPessoaPessoaIdPessoa() {
-        return this.grupoHasPessoaPessoaIdPessoa;
+    public Long getGrupoHasPessoaPessoaIdpessoa() {
+        return this.grupoHasPessoaPessoaIdpessoa;
     }
     
-    public void setGrupoHasPessoaPessoaIdPessoa(Long grupoHasPessoaPessoaIdPessoa) {
-        this.grupoHasPessoaPessoaIdPessoa = grupoHasPessoaPessoaIdPessoa;
+    public void setGrupoHasPessoaPessoaIdpessoa(Long grupoHasPessoaPessoaIdpessoa) {
+        this.grupoHasPessoaPessoaIdpessoa = grupoHasPessoaPessoaIdpessoa;
     }
 
-    @Column(name="grupo_has_pessoa_grupo_idGrupo", nullable=false)
-    public Long getGrupoHasPessoaGrupoIdGrupo() {
-        return this.grupoHasPessoaGrupoIdGrupo;
+    @Column(name="grupo_has_pessoa_grupo_idgrupo", nullable=false)
+    public Long getGrupoHasPessoaGrupoIdgrupo() {
+        return this.grupoHasPessoaGrupoIdgrupo;
     }
     
-    public void setGrupoHasPessoaGrupoIdGrupo(Long grupoHasPessoaGrupoIdGrupo) {
-        this.grupoHasPessoaGrupoIdGrupo = grupoHasPessoaGrupoIdGrupo;
+    public void setGrupoHasPessoaGrupoIdgrupo(Long grupoHasPessoaGrupoIdgrupo) {
+        this.grupoHasPessoaGrupoIdgrupo = grupoHasPessoaGrupoIdgrupo;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name="dataescala", length=13)
-    public Date getDataEscala() {
-        return this.dataEscala;
+    public Date getDataescala() {
+        return this.dataescala;
     }
     
-    public void setDataEscala(Date dataEscala) {
-        this.dataEscala = dataEscala;
+    public void setDataescala(Date dataescala) {
+        this.dataescala = dataescala;
     }
+
 }
 
 

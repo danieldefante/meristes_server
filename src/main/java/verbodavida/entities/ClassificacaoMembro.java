@@ -13,24 +13,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="grupo", schema="public")
-public class Grupo  implements Serializable {
+@Table(name="classificacao_membro", schema="public")
+public class ClassificacaoMembro  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Long idGrupo;
+	private Long idClassificacaoMembro;
     private Ministerio ministerio;
-    private String nome;
     private String descricao;
-   
+
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="idgrupo", unique=true, nullable=false)
-    public Long getIdGrupo() {
-        return this.idGrupo;
+    @Column(name="idclassificacao_membro", unique=true, nullable=false)
+    public Long getIdClassificacaoMembro() {
+        return this.idClassificacaoMembro;
     }
     
-    public void setIdGrupo(Long idGrupo) {
-        this.idGrupo = idGrupo;
+    public void setIdClassificacaoMembro(Long idClassificacaoMembro) {
+        this.idClassificacaoMembro = idClassificacaoMembro;
     }
 
     @ManyToOne(fetch=FetchType.LAZY)
@@ -43,15 +42,6 @@ public class Grupo  implements Serializable {
         this.ministerio = ministerio;
     }
 
-    @Column(name="nome", length=50)
-    public String getNome() {
-        return this.nome;
-    }
-    
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     @Column(name="descricao")
     public String getDescricao() {
         return this.descricao;
@@ -62,3 +52,5 @@ public class Grupo  implements Serializable {
     }
 
 }
+
+

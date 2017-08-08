@@ -1,19 +1,20 @@
 package verbodavida.dtos;
 
-import verbodavida.entities.Contato;
-import verbodavida.entities.Endereco;
+import java.util.Date;
 
 public class PessoaDTO {
 
 	private Long idPessoa;
 
-	private Contato contato;
+	private ContatoDTO contato;
 
-	private Endereco endereco;
+	private EnderecoDTO endereco;
 
 	private String nome;
 
 	private String sobrenome;
+	
+	private Date dataNascimento;
 
 	public Long getIdPessoa() {
 		return idPessoa;
@@ -23,21 +24,19 @@ public class PessoaDTO {
 		this.idPessoa = idPessoa;
 	}
 
-//	@JsonIgnore
-	public Contato getContato() {
+	public ContatoDTO getContato() {
 		return contato;
 	}
 
-	public void setContato(Contato contato) {
+	public void setContato(ContatoDTO contato) {
 		this.contato = contato;
 	}
 
-//	@JsonIgnore
-	public Endereco getEndereco() {
+	public EnderecoDTO getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(EnderecoDTO endereco) {
 		this.endereco = endereco;
 	}
 
@@ -57,5 +56,12 @@ public class PessoaDTO {
 		this.sobrenome = sobrenome;
 	}
 
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+	
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
 
 }

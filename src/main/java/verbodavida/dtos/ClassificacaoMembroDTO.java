@@ -1,21 +1,19 @@
 package verbodavida.dtos;
 
-public class GrupoDTO {
+public class ClassificacaoMembroDTO {
 
-	private Long idGrupo;
+	private Long idClassificacaoMembro;
     
 	private Long idMinisterio;
-	
-    private String nome;
 
     private String descricao;
 
-	public Long getIdGrupo() {
-		return idGrupo;
+	public Long getIdClassificacaoMembro() {
+		return idClassificacaoMembro;
 	}
 
-	public void setIdGrupo(Long idGrupo) {
-		this.idGrupo = idGrupo;
+	public void setIdClassificacaoMembro(Long idClassificacaoMembro) {
+		this.idClassificacaoMembro = idClassificacaoMembro;
 	}
 
 	public Long getIdMinisterio() {
@@ -24,14 +22,6 @@ public class GrupoDTO {
 	
 	public void setIdMinisterio(Long idMinisterio) {
 		this.idMinisterio = idMinisterio;
-	}
-	
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	public String getDescricao() {

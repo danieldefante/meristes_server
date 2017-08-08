@@ -21,22 +21,13 @@ import javax.persistence.TemporalType;
 public class Pessoa  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 	private Long idPessoa;
-    
-	private Contato contato;
-    
-	private Endereco endereco;
-    
-	private String nome;
-    
-	private String sobrenome;
-    
-	private Date dataNascimento;
+    private Endereco endereco;
+    private Contato contato;
+    private String nome;
+    private String sobrenome;
+    private Date datanascimento;
 
-    public Pessoa() {
-    }
-   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idpessoa", unique=true, nullable=false)
@@ -48,8 +39,6 @@ public class Pessoa  implements Serializable {
         this.idPessoa = idPessoa;
     }
 
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
     @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="contato_idcontato", nullable=false)
     public Contato getContato() {
@@ -60,9 +49,6 @@ public class Pessoa  implements Serializable {
         this.contato = contato;
     }
 
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//  @JsonIgnore
-//    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
     @ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="endereco_idendereco", nullable=false)
     public Endereco getEndereco() {
@@ -72,7 +58,7 @@ public class Pessoa  implements Serializable {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
-
+    
     @Column(name="nome", length=50)
     public String getNome() {
         return this.nome;
@@ -81,7 +67,7 @@ public class Pessoa  implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
+
     @Column(name="sobrenome", length=50)
     public String getSobrenome() {
         return this.sobrenome;
@@ -93,35 +79,14 @@ public class Pessoa  implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name="datanascimento", length=13)
-    public Date getDataNascimento() {
-        return this.dataNascimento;
+    public Date getDatanascimento() {
+        return this.datanascimento;
     }
     
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setDatanascimento(Date datanascimento) {
+        this.datanascimento = datanascimento;
     }
+
 }
 
-/*{
-    "idpessoa":"0",
-    "nome":"Daniel",
-    "sobrenome":"Defante",
-     "datanascimento":"1498697766590",
- "contato":{ 
-                   "idcontato":"0",
-                   "celular":"98323223",
-                   "celular2":"9908088",
-                   "telefone":"23232323",
-                   "telefone2":"23423432",
-                   "email":"asdf@eddf"
-    },
-    "endereco":{
-                        "idendereco":"0",
-                        "rua":"Italia",
-                        "numero":"67",
-                        "cep":"343434",
-                        "bairro":"Veneza",
-                        "complemento":"saadsffa"
-    }
-}
-*/
+
