@@ -33,6 +33,18 @@ public class GrupoResouce extends GerericResouce<GrupoDTO, GrupoVO>{
 	}
 
 	@GET
+	@Path("/{idGrupo}/findallmembros")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public PagedResult findAllMembros(@QueryParam("page") int page,
+				@QueryParam("size") int size,
+				@PathParam("idMinisterio") Long idMinisterio,
+				@PathParam("idGrupo") Long idGrupo) {
+			
+		return grupoServiceImpl.findAllMembros(page, size, idMinisterio, idGrupo);
+	}
+
+	@GET
 	@Override
 	@Path("/{idGrupo}")
 	@Consumes(MediaType.APPLICATION_JSON)

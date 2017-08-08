@@ -53,6 +53,10 @@ public class GenericService<T, R> {
 	public Long countRegister(List<String> nameParams, List<Object> params) {
 		return null;
 	}
+
+	public Long countRegister(String query, List<String> nameParams, List<Object> params) {
+		return null;
+	}
 	
 }
   

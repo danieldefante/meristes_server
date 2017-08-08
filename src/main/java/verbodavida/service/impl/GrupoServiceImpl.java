@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static verbodavida.dtos.ConverterEntity.converterDTO;
 import static verbodavida.dtos.ConverterEntity.converterDTOList;
 import static verbodavida.querys.GrupoQuery.getQuery;
+import static verbodavida.querys.GrupoQuery.getQueryAllMembros;
 import static verbodavida.querys.GrupoQuery.getQueryByIdMinisterio;
 import static verbodavida.querys.GrupoQuery.getQueryCountRegisters;
 
@@ -12,10 +13,13 @@ import java.util.List;
 import verbodavida.dtos.GrupoDTO;
 import verbodavida.eaos.GrupoEAO;
 import verbodavida.entities.Grupo;
+import verbodavida.entities.Pessoa;
+import verbodavida.querys.GrupoQuery;
 import verbodavida.services.GrupoService;
 import verbodavida.utils.BeanConsultGroup;
 import verbodavida.utils.PagedResult;
 import verbodavida.vos.GrupoVO;
+import verbodavida.vos.PessoaVO;
 
 public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 
@@ -32,10 +36,11 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 	public PagedResult findAll(int page, int size, Long idMinisterio) {
 		BeanConsultGroup beanConsultGroup = new BeanConsultGroup(page, size);
 		
-		List<GrupoVO> grupoVOList = converterDTOList(GrupoVO.class, grupoVOList = grupoEAO.findListByHQL(
-				beanConsultGroup, getQueryByIdMinisterio(), asList("idMinisterio"), asList(idMinisterio)));
+		List<Grupo> listGrupo = grupoEAO.findListByHQL(beanConsultGroup, getQueryByIdMinisterio(), asList("idMinisterio"), asList(idMinisterio));
 		
-		return new PagedResult(countRegister(asList("idMinisterio"), asList(idMinisterio)), grupoVOList);
+		List<GrupoVO> grupoVOList = converterDTOList(GrupoVO.class, listGrupo);
+		
+		return new PagedResult(countRegister(getQueryCountRegisters(), asList("idMinisterio"), asList(idMinisterio)), grupoVOList);
 	}
 
 	@Override
@@ -61,8 +66,19 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 	}
 
 	@Override
-	public Long countRegister(List<String> nameParam, List<Object> valueParam) {
-		return (Long) grupoEAO.executeHQLOneResult(getQueryCountRegisters(), nameParam, valueParam);
+	public Long countRegister(String query, List<String> nameParam, List<Object> valueParam) {
+		return (Long) grupoEAO.executeHQLOneResult(query, nameParam, valueParam);
+	}
+
+	public PagedResult findAllMembros(int page, int size, Long idMinisterio, Long idGrupo) {
+		BeanConsultGroup beanConsultGroup = new BeanConsultGroup(page, size);
+
+		List<Pessoa> pessoaList = grupoEAO.findListByHQL(beanConsultGroup, getQueryAllMembros(), asList("idMinisterio", "idGrupo"), asList(idMinisterio, idGrupo));
+		
+		List<PessoaVO> pessoaVO = converterDTOList(PessoaVO.class, pessoaList);
+		
+		return new PagedResult(countRegister(GrupoQuery.getQueryCountRegistersMembros(), asList("idMinisterio", "idGrupo"), asList(idMinisterio, idGrupo)), pessoaVO);
+		
 	}
 	
 }

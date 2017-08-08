@@ -28,4 +28,20 @@ public class GrupoQuery {
 				.toString();
 	}
 
+	public static String getQueryAllMembros() {
+		
+		return new StringBuilder()
+				.append(" from Pessoa as p")
+				.append(" where p.idPessoa =  ministerio.idMinisterio = :idMinisterio")
+				.toString();
+	}
+
+	public static String getQueryCountRegistersMembros() {
+		
+		return new StringBuilder()
+				.append(" select count(*) from Grupo as g")
+				.append(" where g.ministerio.idMinisterio = :idMinisterio")
+				.toString();
+	}
+
 }
