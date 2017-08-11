@@ -1,7 +1,7 @@
 package verbodavida.dtos;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MinisterioDTO {
 
@@ -17,9 +17,9 @@ public class MinisterioDTO {
 	
 	private String observacoes;
     
-	private Set<GrupoDTO> grupos = new HashSet<GrupoDTO>(0);
+	private List<GrupoDTO> grupos = new ArrayList<GrupoDTO>();
 	
-	private Set<ClassificacaoMembroDTO> classificacaoMembros = new HashSet<ClassificacaoMembroDTO>(0);
+	private List<ClassificacaoMembroDTO> classificacaoMembros = new ArrayList<ClassificacaoMembroDTO>();
 	
 	public Long getIdMinisterio() {
 		return idMinisterio;
@@ -69,19 +69,19 @@ public class MinisterioDTO {
 		this.observacoes = observacoes;
 	}
 	
-	public Set<GrupoDTO> getGrupos() {
+	public List<GrupoDTO> getGrupos() {
         return this.grupos;
     }
 	    
-    public void setGrupos(Set<GrupoDTO> grupos) {
+    public void setGrupos(List<GrupoDTO> grupos) {
         this.grupos = grupos;
     }
 
-    public Set<ClassificacaoMembroDTO> getClassificacaoMembros() {
+    public List<ClassificacaoMembroDTO> getClassificacaoMembros() {
     	return this.classificacaoMembros;
     }
     
-    public void setClassificacaoMembros(Set<ClassificacaoMembroDTO> classificacaoMembros) {
+    public void setClassificacaoMembros(List<ClassificacaoMembroDTO> classificacaoMembros) {
     	this.classificacaoMembros = classificacaoMembros;
     }
 

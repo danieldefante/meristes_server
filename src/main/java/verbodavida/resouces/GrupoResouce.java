@@ -16,6 +16,7 @@ import verbodavida.resouceconfig.GerericResouce;
 import verbodavida.service.impl.GrupoServiceImpl;
 import verbodavida.utils.PagedResult;
 import verbodavida.vos.GrupoVO;
+import verbodavida.vos.PessoaVO;
 
 @Path(GrupoResouce.PATH)
 public class GrupoResouce extends GerericResouce<GrupoDTO, GrupoVO>{
@@ -28,20 +29,8 @@ public class GrupoResouce extends GerericResouce<GrupoDTO, GrupoVO>{
 	@Override
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public PagedResult findAll(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio) {
+	public PagedResult<GrupoVO> findAll(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio) {
 		return grupoServiceImpl.findAll(page, size, idMinisterio);
-	}
-
-	@GET
-	@Path("/{idGrupo}/findallmembros")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public PagedResult findAllMembros(@QueryParam("page") int page,
-				@QueryParam("size") int size,
-				@PathParam("idMinisterio") Long idMinisterio,
-				@PathParam("idGrupo") Long idGrupo) {
-			
-		return grupoServiceImpl.findAllMembros(page, size, idMinisterio, idGrupo);
 	}
 
 	@GET
@@ -79,4 +68,23 @@ public class GrupoResouce extends GerericResouce<GrupoDTO, GrupoVO>{
 		return grupoServiceImpl.delete(idGrupo);
 	}
 	
+	@GET
+	@Path("/{idGrupo}/vincularpessoa/{idPessoa}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String vincularPessoa(@PathParam("idMinisterio") Long idMinisterio, @PathParam("idGrupo") Long idGrupo, @PathParam("idPessoa") Long idPessoa) {
+		return grupoServiceImpl.vincularPessoa(idMinisterio, idGrupo, idPessoa);
+	}
+	
+    @GET
+	@Path("/{idGrupo}/membros")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public PagedResult<PessoaVO> findAllMembros(@QueryParam("page") int page,
+									  @QueryParam("size") int size,
+									  @PathParam("idMinisterio") Long idMinisterio,
+									  @PathParam("idGrupo") Long idGrupo) {
+			
+    	return grupoServiceImpl.findMembrosByIdGrupo(page, size, idMinisterio, idGrupo);
+	}
 }

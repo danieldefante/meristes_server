@@ -25,12 +25,24 @@ public class IEAO {
 		return findEntity(clazz, id);
 	}
 
-	public <T> List<T> findListByHQL(BeanConsultGroup beanConsultGroup, String sql, List<String> nameParam, List<Object> valueParam) {
-		return PersistDB.executeHQL(beanConsultGroup, sql,  nameParam,  valueParam);
+	public <T> List<T> findPagedList(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql, List<String> nameParam, List<Object> valueParam) {
+		return PersistDB.executeHQL(clazz, beanConsultGroup, sql,  nameParam,  valueParam);
 	}
 
-	public Object executeHQLOneResult(String sql, List<String> namesParamList, List<Object> valuesParamList) {
+	public <T> T executeHQLOneResult(String sql, List<String> namesParamList, List<Object> valuesParamList) {
 		return PersistDB.executeHQLOneResult( sql,  namesParamList,  valuesParamList);
+	}
+
+	public <T> T executeSQLOneResult(String sql, List<String> namesParamList, List<Object> valuesParamList) {
+		return PersistDB.executeSQLOneResult(sql, namesParamList,  valuesParamList);
+	}
+
+	public <T> List<T> executeSQL(String sql, List<String> namesParamList, List<Object> valuesParamList) {
+		return PersistDB.executeSQL( sql,  namesParamList,  valuesParamList);
+	}
+
+	public <T> List<T> executeSQLPaged(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql, List<String> namesParamList, List<Object> valuesParamList) {
+		return PersistDB.executeSQL(clazz, beanConsultGroup,  sql,  namesParamList,  valuesParamList);
 	}
 
 	public <T> String insert(T entity) {

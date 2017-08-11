@@ -17,6 +17,7 @@ import verbodavida.dtos.MinisterioDTO;
 import verbodavida.resouceconfig.GerericResouce;
 import verbodavida.service.impl.MinisterioServiceImpl;
 import verbodavida.utils.PagedResult;
+import verbodavida.vos.ClassificacaoMembroVO;
 import verbodavida.vos.MinisterioVO;
 
 @Path(MinisterioResouce.PATH)
@@ -36,7 +37,7 @@ public class MinisterioResouce extends GerericResouce<MinisterioDTO, MinisterioV
 	@Override
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public PagedResult findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
+    public PagedResult<MinisterioVO> findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
     	return ministerioServiceImpl.findAll(page, size);
     }
 
@@ -74,5 +75,12 @@ public class MinisterioResouce extends GerericResouce<MinisterioDTO, MinisterioV
     	
     	return ministerioServiceImpl.delete(idMinisterio);
     }
+    
+    @GET
+ 	@Consumes(MediaType.APPLICATION_JSON)
+ 	@Produces(MediaType.APPLICATION_JSON)
+     public PagedResult<ClassificacaoMembroVO> findClassificacaoByMinisterio(@QueryParam("page") int page, @QueryParam("size") int size) {
+     	return ministerioServiceImpl.findClassificacaoByMinisterio(page, size);
+     }
 
 }

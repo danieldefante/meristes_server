@@ -1,6 +1,8 @@
 package verbodavida.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +24,7 @@ public class Grupo  implements Serializable {
     private Ministerio ministerio;
     private String nome;
     private String descricao;
+    private Set<VinculoPessoaGrupo> vinculoPessoaGrupos = new HashSet<VinculoPessoaGrupo>(0);
    
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +63,15 @@ public class Grupo  implements Serializable {
     
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="grupo")
+    public Set<VinculoPessoaGrupo> getVinculoPessoaGrupos() {
+        return this.vinculoPessoaGrupos;
+    }
+    
+    public void setVinculoPessoaGrupos(Set<VinculoPessoaGrupo> vinculoPessoaGrupos) {
+        this.vinculoPessoaGrupos = vinculoPessoaGrupos;
     }
 
 }

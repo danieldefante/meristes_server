@@ -1,5 +1,6 @@
 package verbodavida.service.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import verbodavida.dtos.ConverterEntity;
@@ -51,6 +52,10 @@ public class EscalaServiceImpl extends EscalaService<EscalaDTO, EscalaVO> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
+	public BigInteger countRegister(String query, List<String> nameParam, List<Object> valueParam) {
+		return escalaEAO.executeSQLOneResult(query, nameParam, valueParam);
+	}
 
 }

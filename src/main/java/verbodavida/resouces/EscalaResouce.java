@@ -17,17 +17,18 @@ import verbodavida.service.impl.EscalaServiceImpl;
 import verbodavida.utils.PagedResult;
 import verbodavida.vos.EscalaVO;
 
+@Path(EscalaResouce.PATH)
 public class EscalaResouce extends GerericResouce<EscalaDTO, EscalaVO> {
 
 	private EscalaServiceImpl escalaServiceImpl = new EscalaServiceImpl();
 	
-	static final String PATH = "/escala";
+	static final String PATH = GrupoResouce.PATH +"/{idGrupo}/escala";
 	
 	@GET
 	@Override
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public PagedResult findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
+	public PagedResult<EscalaVO> findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
 		 escalaServiceImpl.findAll(page, size);
 		 return null;
 	}
@@ -65,6 +66,4 @@ public class EscalaResouce extends GerericResouce<EscalaDTO, EscalaVO> {
 	public String delete(@PathParam("idEscala") Long idEscala) {
 		return escalaServiceImpl.delete(idEscala);
 	}
-	
-
 }

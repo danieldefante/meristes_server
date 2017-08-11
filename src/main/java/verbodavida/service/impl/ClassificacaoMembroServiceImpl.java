@@ -5,6 +5,7 @@ import static verbodavida.dtos.ConverterEntity.converterDTOList;
 import static verbodavida.querys.ClassificacaoMembroQuery.getQueryByIdMinisterio;
 import static verbodavida.querys.ClassificacaoMembroQuery.getQueryCountRegisters;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import verbodavida.dtos.ClassificacaoMembroDTO;
@@ -20,13 +21,15 @@ public class ClassificacaoMembroServiceImpl extends ClassificacaoMembroService<C
 	ClassificacaoMembroEAO classificacaoMembroEAO = new ClassificacaoMembroEAO();
 	
 	@Override
-	public PagedResult findAll(int page, int size, Long idMinisterio) {
+	public PagedResult<ClassificacaoMembroVO> findAll(int page, int size, Long idMinisterio) {
 		BeanConsultGroup beanConsultGroup = new BeanConsultGroup(page, size);
 		
-		List<ClassificacaoMembroVO> classificacaoMembroVOList = converterDTOList(ClassificacaoMembroVO.class, classificacaoMembroVOList = classificacaoMembroEAO.findListByHQL(
-				beanConsultGroup, getQueryByIdMinisterio(), asList("idMinisterio"), asList(idMinisterio)));
+		List<ClassificacaoMembroVO> classificacaoMembroVOList = converterDTOList(ClassificacaoMembroVO.class, classificacaoMembroVOList = classificacaoMembroEAO.findPagedList(
+				ClassificacaoMembroVO.class, beanConsultGroup, getQueryByIdMinisterio(), asList("idMinisterio"), asList(idMinisterio)));
 		
-		return new PagedResult(countRegister(asList("idMinisterio"), asList(idMinisterio)), classificacaoMembroVOList);
+		BigInteger sizeDB = countRegister(getQueryCountRegisters(), asList("idMinisterio"), asList(idMinisterio));
+		
+		return new PagedResult<ClassificacaoMembroVO> (sizeDB, classificacaoMembroVOList);
 	}
 
 
@@ -41,8 +44,8 @@ public class ClassificacaoMembroServiceImpl extends ClassificacaoMembroService<C
 	}
 
 	@Override
-	public Long countRegister(List<String> nameParam, List<Object> valueParam) {
-		return (Long) classificacaoMembroEAO.executeHQLOneResult(getQueryCountRegisters(), nameParam, valueParam);
+	public BigInteger countRegister(String sql, List<String> nameParam, List<Object> valueParam) {
+		return classificacaoMembroEAO.executeSQLOneResult(sql, nameParam, valueParam);
 	}
 	
 }

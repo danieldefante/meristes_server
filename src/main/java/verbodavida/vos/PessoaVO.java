@@ -7,13 +7,15 @@ public class PessoaVO {
 	private String nome;
 
 	private String sobrenome;
+	
+	private Boolean escalado;
 
 	public Long getIdPessoa() {
 		return idPessoa;
 	}
 
-	public void setIdPessoa(Long idPessoa) {
-		this.idPessoa = idPessoa;
+	public void setIdPessoa(Integer idPessoa) {
+		this.idPessoa = idPessoa.longValue();
 	}
 
 	public String getNome() {
@@ -30,5 +32,13 @@ public class PessoaVO {
 
 	public void setSobrenome(String sobrenome) {
 		this.sobrenome = sobrenome;
+	}
+
+	public Boolean getEscalado() {
+		return escalado;
+	}
+
+	public void setEscalado(Boolean escalado) {
+		this.escalado = escalado;
 	}
 }

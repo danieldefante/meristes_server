@@ -1,30 +1,33 @@
 package verbodavida.utils;
 
-public class PagedResult {
-	
-	private Long sizeDB;
-	
-	private Object data;
+import java.math.BigInteger;
+import java.util.List;
 
-	public Long getSizeDB() {
+public class PagedResult<T> {
+	
+	private BigInteger sizeDB;
+	
+	private List<T> dataList;
+
+	public BigInteger getSizeDB() {
 		return sizeDB;
 	}
 
-	public void setSizeDB(Long sizeDB) {
+	public void setSizeDB(BigInteger sizeDB) {
 		this.sizeDB = sizeDB;
 	}
 
-	public Object getData() {
-		return data;
+	public List<T> getDataList() {
+		return dataList;
 	}
 
-	public void setData(Object data) {
-		this.data = data;
+	public void setDataList(List<T> dataList) {
+		this.dataList = dataList;
 	}
 
-	public PagedResult(Long sizeDB, Object data) {
+	public PagedResult(BigInteger sizeDB, List<T> dataList) {
 		this.sizeDB = sizeDB;
-		this.data = data;
+		this.dataList = dataList;
 	}
 	
 	

@@ -4,6 +4,7 @@ import static verbodavida.dtos.ConverterEntity.converterDTO;
 import static verbodavida.dtos.ConverterEntity.converterDTOList;
 import static verbodavida.querys.PessoaQuery.getQueryCountRegisters;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import verbodavida.dtos.PessoaDTO;
@@ -19,11 +20,18 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 	private PessoaEAO pessoaEAO = new PessoaEAO();
 	
 	@Override
-	public PagedResult findAll(int page, int size) {
+	public PagedResult<PessoaVO> findAll(int page, int size) {
 		BeanConsultGroup beanConsultaGroup = new BeanConsultGroup(page, size);
-		List<PessoaVO> pessoaVOList = converterDTOList(PessoaVO.class,
-				pessoaEAO.findAll(Pessoa.class, beanConsultaGroup));
-		return new PagedResult(countRegister(), pessoaVOList);
+		List<Pessoa> pessoaList = pessoaEAO.findAll(Pessoa.class, beanConsultaGroup);
+		
+		if(pessoaList != null){
+			List<PessoaVO> pessoaVOList = converterDTOList(PessoaVO.class, pessoaList);
+			
+			BigInteger sizeDB = countRegister(getQueryCountRegisters(), null, null);
+			return new PagedResult<PessoaVO>(sizeDB, pessoaVOList);
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -50,8 +58,8 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 	}
 	
 	@Override
-	public Long countRegister() {
-		return (Long) pessoaEAO.executeHQLOneResult(getQueryCountRegisters(), null, null);
+	public BigInteger countRegister(String sql, List<String> nameParams, List<Object> params) {
+		return pessoaEAO.executeSQLOneResult(sql, null, null);
 	}
 
 }

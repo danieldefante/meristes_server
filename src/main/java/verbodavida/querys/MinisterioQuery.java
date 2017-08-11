@@ -14,7 +14,7 @@ public class MinisterioQuery {
 	public static String getQueryCountRegisters() {
 		
 		return new StringBuilder()
-				.append(" select count(*) from Ministerio ")
+				.append(" select count(*) from ministerio ")
 				.toString();
 	}
 }

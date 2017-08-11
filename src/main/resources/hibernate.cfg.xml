@@ -10,11 +10,12 @@
     <property name="hibernate.hbm2ddl.auto">update</property>
     <property name="hibernate.connection.autocommit">false</property>
     <mapping class="verbodavida.entities.Pessoa"/>
+    <mapping class="verbodavida.entities.Grupo"/>
+    <mapping class="verbodavida.entities.Ministerio"/>
+    <mapping class="verbodavida.entities.Escala"/>
     <mapping class="verbodavida.entities.Endereco"/>
     <mapping class="verbodavida.entities.Contato"/>
-    <mapping class="verbodavida.entities.Grupo"/>
-    <mapping class="verbodavida.entities.Escala"/>
-    <mapping class="verbodavida.entities.Ministerio"/>
     <mapping class="verbodavida.entities.ClassificacaoMembro"/>
+    <mapping class="verbodavida.entities.VinculoPessoaGrupo"/>
   </session-factory>
 </hibernate-configuration>

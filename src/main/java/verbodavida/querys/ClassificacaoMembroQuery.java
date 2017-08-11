@@ -23,8 +23,8 @@ public class ClassificacaoMembroQuery {
 	public static String getQueryCountRegisters() {
 		
 		return new StringBuilder()
-				.append(" select count(*) from ClassificacaoMembro as c")
-				.append(" where c.ministerio.idMinisterio = :idMinisterio")
+				.append(" SELECT COUNT(*) FROM classificacao_membro ")
+				.append(" WHERE ministerio_idministerio = :idMinisterio")
 				.toString();
 	}
 
