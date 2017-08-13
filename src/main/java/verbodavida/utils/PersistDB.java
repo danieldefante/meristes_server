@@ -2,7 +2,6 @@ package verbodavida.utils;
 
 import java.util.List;
 
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -11,8 +10,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.hibernate.transform.Transformers;
-
-import verbodavida.vos.PessoaVO;
 
 public class PersistDB {
 
@@ -218,38 +215,206 @@ public class PersistDB {
 		return list;
 	}
 	
-	public static <T> List<T> executeSQL(String sql, List<String> nameParams, List<Object> valueParam) {
+//	public static <T> List<T> executeSQL(String sql, List<String> nameParams, List<Object> valueParam) {
+//		
+//		Session session = null;
+//		List<T> list = null;
+//        try {
+//
+//            session = HibernateUtil.getSessionFactory().openSession();
+//            
+//            Query query = session.createNativeQuery(sql);
+//            
+//            if (nameParams != null) {
+//            
+//            	int sizeListParams = nameParams.size();
+//				for (int i = 0; i < sizeListParams; i++) {
+//					
+//					query.setParameter(nameParams.get(i), valueParam.get(i));
+//				}
+//            }
+//
+//            list = query.list();
+//
+//        } catch (Exception e) {
+//            System.out.println("ERROR PersistDB -> " + e);
+//        } finally {
+//            session.clear();
+//            session.close();
+//        }
+//		
+//		return list;
+//	}
+
+
+	@SuppressWarnings("deprecation")
+	public static <T> T executeSQLOneResult(String sql) {	
+		
+		Session session = null;
+		T result = null;
+		try {
+			
+			session = HibernateUtil.getSessionFactory().openSession();
+			
+			@SuppressWarnings("unchecked")
+			Query<T> query = session.createSQLQuery(sql);
+			
+			result = query.uniqueResult();
+			
+		} catch (Exception e) {
+			System.out.println("ERROR PersistDB -> " + e);
+		} finally {
+			session.clear();
+			session.close();
+		}
+		
+		return result;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static <T> T executeSQLOneResult(Class<T> clazz, String sql) {	
+		
+		Session session = null;
+		T result = null;
+		try {
+			
+			session = HibernateUtil.getSessionFactory().openSession();
+			
+			@SuppressWarnings("unchecked")
+			Query<T> query = session.createSQLQuery(sql).setResultTransformer( Transformers.aliasToBean(clazz));
+			
+			result = query.setResultTransformer(Transformers.aliasToBean(clazz)).uniqueResult();
+			
+		} catch (Exception e) {
+			System.out.println("ERROR PersistDB -> " + e);
+		} finally {
+			session.clear();
+			session.close();
+		}
+		
+		return result;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static <T> List<T> executeSQL( BeanConsultGroup beanConsultGroup, String sql) {	
 		
 		Session session = null;
 		List<T> list = null;
-        try {
-
-            session = HibernateUtil.getSessionFactory().openSession();
-            
-            Query query = session.createNativeQuery(sql);
-            
-            if (nameParams != null) {
-            
-            	int sizeListParams = nameParams.size();
+		try {
+			
+			session = HibernateUtil.getSessionFactory().openSession();
+			
+			@SuppressWarnings("unchecked")
+			Query<T> query = session.createSQLQuery(sql);
+			
+			if (beanConsultGroup != null) {
+				query.setFirstResult(beanConsultGroup.getPageResolver());
+				query.setMaxResults(beanConsultGroup.getSize());
+			}	
+			
+			list = query.list();
+			
+		} catch (Exception e) {
+			System.out.println("ERROR PersistDB -> " + e);
+		} finally {
+			session.clear();
+			session.close();
+		}
+		
+		return list;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static <T> List<T> executeSQL(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql) {	
+		
+		Session session = null;
+		List<T> list = null;
+		try {
+			
+			session = HibernateUtil.getSessionFactory().openSession();
+			
+			@SuppressWarnings("unchecked")
+			Query<T> query = session.createSQLQuery(sql).setResultTransformer( Transformers.aliasToBean(clazz));
+			
+			list = query.setResultTransformer(Transformers.aliasToBean(clazz)).list();
+			
+		} catch (Exception e) {
+			System.out.println("ERROR PersistDB -> " + e);
+		} finally {
+			session.clear();
+			session.close();
+		}
+		
+		return list;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static <T> T executeSQLOneResult(Class<T> clazz, String sql, List<String> nameParams, List<Object> valueParam) {	
+		
+		Session session = null;
+		T result = null;
+		try {
+			
+			session = HibernateUtil.getSessionFactory().openSession();
+			
+			@SuppressWarnings("unchecked")
+			Query<T> query = session.createSQLQuery(sql).setResultTransformer( Transformers.aliasToBean(clazz));
+			
+			if (nameParams != null) {
+				
+				int sizeListParams = nameParams.size();
 				for (int i = 0; i < sizeListParams; i++) {
 					
 					query.setParameter(nameParams.get(i), valueParam.get(i));
 				}
-            }
-
-            list = query.list();
-
-        } catch (Exception e) {
-            System.out.println("ERROR PersistDB -> " + e);
-        } finally {
-            session.clear();
-            session.close();
-        }
+			}
+			
+			result = query.setResultTransformer(Transformers.aliasToBean(clazz)).uniqueResult();
+			
+		} catch (Exception e) {
+			System.out.println("ERROR PersistDB -> " + e);
+		} finally {
+			session.clear();
+			session.close();
+		}
 		
-		return list;
+		return result;
 	}
 
-//	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation")
+	public static <T> T executeSQLOneResult(String sql, List<String> nameParams, List<Object> valueParam) {	
+		
+		Session session = null;
+		T result = null;
+		try {
+			
+			session = HibernateUtil.getSessionFactory().openSession();
+			
+			@SuppressWarnings("unchecked")
+			Query<T> query = session.createSQLQuery(sql);
+			
+			if (nameParams != null) {
+				
+				int sizeListParams = nameParams.size();
+				for (int i = 0; i < sizeListParams; i++) {
+					
+					query.setParameter(nameParams.get(i), valueParam.get(i));
+				}
+			}
+			
+			result = query.uniqueResult();
+			
+		} catch (Exception e) {
+			System.out.println("ERROR PersistDB -> " + e);
+		} finally {
+			session.clear();
+			session.close();
+		}
+		
+		return result;
+	}
+	
+	@SuppressWarnings("deprecation")
 	public static <T> List<T> executeSQL(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql, List<String> nameParams, List<Object> valueParam) {	
 		
 		Session session = null;
@@ -258,7 +423,8 @@ public class PersistDB {
         	
             session = HibernateUtil.getSessionFactory().openSession();
             
-            Query<T> query = session.createNativeQuery(sql, clazz);
+            @SuppressWarnings("unchecked")
+			Query<T> query = session.createSQLQuery(sql).setResultTransformer( Transformers.aliasToBean(clazz));
             
             if (nameParams != null) {
             
@@ -286,40 +452,37 @@ public class PersistDB {
 		return list;
 	}
 
-	
-
-
-	public static <T> T executeSQLOneResult (String sql, List<String> nameParams, List<Object> valueParam) {
-		
-		Session session = null;
-		T result = null;
-		
-		try {
-			
-			session = HibernateUtil.getSessionFactory().openSession();
-			
-			Query query = session.createNativeQuery(sql);
-			
-			if (nameParams != null) {
-				
-				int sizeListParams = nameParams.size();
-				for (int i = 0; i < sizeListParams; i++) {
-					
-					query.setParameter(nameParams.get(i), valueParam.get(i));
-				}
-			}
-			
-			result = (T) query.uniqueResult();
-			
-		} catch (Exception e) {
-			System.out.println("ERROR PersistDB -> " + e);
-		} finally {
-			session.clear();
-			session.close();
-		}
-		
-		return result;
-	}
+//	public static <T> T executeSQLOneResult (String sql, List<String> nameParams, List<Object> valueParam) {
+//		
+//		Session session = null;
+//		T result = null;
+//		
+//		try {
+//			
+//			session = HibernateUtil.getSessionFactory().openSession();
+//			
+//			Query query = session.createNativeQuery(sql);
+//			
+//			if (nameParams != null) {
+//				
+//				int sizeListParams = nameParams.size();
+//				for (int i = 0; i < sizeListParams; i++) {
+//					
+//					query.setParameter(nameParams.get(i), valueParam.get(i));
+//				}
+//			}
+//			
+//			result = (T) query.uniqueResult();
+//			
+//		} catch (Exception e) {
+//			System.out.println("ERROR PersistDB -> " + e);
+//		} finally {
+//			session.clear();
+//			session.close();
+//		}
+//		
+//		return result;
+//	}
 	
 	
 

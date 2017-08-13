@@ -15,9 +15,10 @@ import javax.ws.rs.core.UriInfo;
 
 import verbodavida.dtos.MinisterioDTO;
 import verbodavida.resouceconfig.GerericResouce;
+import verbodavida.service.impl.FuncaoMinisterialServiceImpl;
 import verbodavida.service.impl.MinisterioServiceImpl;
 import verbodavida.utils.PagedResult;
-import verbodavida.vos.ClassificacaoMembroVO;
+import verbodavida.vos.FuncaoMinisterialVO;
 import verbodavida.vos.MinisterioVO;
 
 @Path(MinisterioResouce.PATH)
@@ -37,8 +38,9 @@ public class MinisterioResouce extends GerericResouce<MinisterioDTO, MinisterioV
 	@Override
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public PagedResult<MinisterioVO> findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
-    	return ministerioServiceImpl.findAll(page, size);
+    public PagedResult<MinisterioVO> findPaged(@QueryParam("page") int page, @QueryParam("size") int size) {
+    	
+    	return ministerioServiceImpl.findPaged(page, size);
     }
 
     @GET
@@ -65,6 +67,7 @@ public class MinisterioResouce extends GerericResouce<MinisterioDTO, MinisterioV
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String update(MinisterioDTO ministerioDTO) {
+    	
     	return ministerioServiceImpl.update(ministerioDTO);
     }
 
@@ -77,10 +80,14 @@ public class MinisterioResouce extends GerericResouce<MinisterioDTO, MinisterioV
     }
     
     @GET
+    @Path("/{idMinisterio}/funcaoministerial/pessoa/{idPessoa}")
  	@Consumes(MediaType.APPLICATION_JSON)
  	@Produces(MediaType.APPLICATION_JSON)
-     public PagedResult<ClassificacaoMembroVO> findClassificacaoByMinisterio(@QueryParam("page") int page, @QueryParam("size") int size) {
-     	return ministerioServiceImpl.findClassificacaoByMinisterio(page, size);
+     public PagedResult<FuncaoMinisterialVO> pagedFuncaoMinisterial(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio, @PathParam("idPessoa") Long idPessoa) {
+     	
+    	FuncaoMinisterialServiceImpl funcaoMinisterialServiceImpl = new FuncaoMinisterialServiceImpl();
+     	
+    	return funcaoMinisterialServiceImpl.findPaged(page, size, idMinisterio, idPessoa);
      }
 
 }

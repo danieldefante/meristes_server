@@ -1,27 +1,19 @@
 package verbodavida.vos;
 
+import java.math.BigInteger;
+
 public class ClassificacaoMembroVO {
 
-	private Long idGrupo;
-    
-    private String nome;
+	private Long idClassificacaoMembro;
 
     private String descricao;
 
-	public Long getIdGrupo() {
-		return idGrupo;
+	public Long getIdClassificacaoMembro() {
+		return idClassificacaoMembro;
 	}
 
-	public void setIdGrupo(Long idGrupo) {
-		this.idGrupo = idGrupo;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setIdClassificacaoMembro(BigInteger idClassificacaoMembro) {
+		this.idClassificacaoMembro = idClassificacaoMembro.longValue();
 	}
 
 	public String getDescricao() {

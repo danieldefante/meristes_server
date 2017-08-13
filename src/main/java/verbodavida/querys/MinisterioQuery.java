@@ -14,7 +14,13 @@ public class MinisterioQuery {
 	public static String getQueryCountRegisters() {
 		
 		return new StringBuilder()
-				.append(" select count(*) from ministerio ")
+				.append(" SELECT COUNT(*) FROM ministerio ")
+				.toString();
+	}
+
+	public static String getPaged() {
+		return new StringBuilder()
+				.append(" SELECT idministerio as \"idMinisterio\", nome, descricao FROM ministerio ORDER BY nome ASC ")
 				.toString();
 	}
 }

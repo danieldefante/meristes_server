@@ -1,5 +1,6 @@
 package verbodavida.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="vinculo_pessoa_grupo", schema="public")
-public class VinculoPessoaGrupo  implements java.io.Serializable {
+public class VinculoPessoaGrupo  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Long idVinculoPessoaGrupo;
@@ -27,6 +28,7 @@ public class VinculoPessoaGrupo  implements java.io.Serializable {
     private Pessoa pessoa;
     private Date dataVinculacao;
     private Set<Escala> escalas = new HashSet<Escala>(0);
+
    
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,8 +70,8 @@ public class VinculoPessoaGrupo  implements java.io.Serializable {
     public void setDataVinculacao(Date dataVinculacao) {
         this.dataVinculacao = dataVinculacao;
     }
-
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="vinculoPessoaGrupo")
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="vinculo_pessoa_grupo")
     public Set<Escala> getEscalas() {
         return this.escalas;
     }
@@ -77,7 +79,6 @@ public class VinculoPessoaGrupo  implements java.io.Serializable {
     public void setEscalas(Set<Escala> escalas) {
         this.escalas = escalas;
     }
-
 }
 
 

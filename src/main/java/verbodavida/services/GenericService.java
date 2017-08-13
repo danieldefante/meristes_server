@@ -1,6 +1,5 @@
 package verbodavida.services;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import verbodavida.utils.PagedResult;
@@ -11,11 +10,15 @@ public class GenericService<T, R> {
 		return null;
 	};
 
-	public PagedResult<R> findAll(int page, int size){
+	public PagedResult<R> findPaged(int page, int size){
 		return null;
 	};
 	
-	public PagedResult<R> findAll(int page, int size, Long id){
+	public PagedResult<R> findPaged(int page, int size, Long id){
+		return null;
+	};
+	
+	public PagedResult<R> findPaged(int page, int size, Long idPatern, Long id){
 		return null;
 	};
 	
@@ -47,9 +50,13 @@ public class GenericService<T, R> {
 		return null;
 	}
 
-	public BigInteger countRegister(String query, List<String> nameParams, List<Object> params) {
-		return null;
-	}
+//	public Object executeSQL(String query, List<String> nameParams, List<Object> params) {
+//		return null;
+//	}
+//
+//	public Object executeSQLOneResult(String query) {
+//		return null;
+//	}
 	
 }
   

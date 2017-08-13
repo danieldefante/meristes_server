@@ -1,5 +1,7 @@
 package verbodavida.vos;
 
+import java.math.BigInteger;
+
 public class MinisterioVO {
 	
 	private Long idMinisterio;
@@ -12,8 +14,8 @@ public class MinisterioVO {
 		return idMinisterio;
 	}
 
-	public void setIdMinisterio(Long idMinisterio) {
-		this.idMinisterio = idMinisterio;
+	public void setIdMinisterio(BigInteger idMinisterio) {
+		this.idMinisterio = idMinisterio.longValue();
 	}
 
 	public String getNome() {

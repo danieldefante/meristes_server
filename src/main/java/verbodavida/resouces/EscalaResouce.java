@@ -28,9 +28,9 @@ public class EscalaResouce extends GerericResouce<EscalaDTO, EscalaVO> {
 	@Override
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public PagedResult<EscalaVO> findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
-		 escalaServiceImpl.findAll(page, size);
-		 return null;
+	public PagedResult<EscalaVO> findPaged(@QueryParam("page") int page, @QueryParam("size") int size) {
+
+		return escalaServiceImpl.findPaged(page, size);
 	}
 
 	@GET
@@ -39,6 +39,7 @@ public class EscalaResouce extends GerericResouce<EscalaDTO, EscalaVO> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public EscalaDTO find(@PathParam("idEscala") Long idEscala) {
+		
 		return escalaServiceImpl.find(idEscala);
 	}
 
@@ -47,6 +48,8 @@ public class EscalaResouce extends GerericResouce<EscalaDTO, EscalaVO> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String insert(EscalaDTO escalaDTO) {
+		
+		System.out.println(escalaDTO);
 		return escalaServiceImpl.insert(escalaDTO);
 	}
 
@@ -55,6 +58,7 @@ public class EscalaResouce extends GerericResouce<EscalaDTO, EscalaVO> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String update(EscalaDTO escalaDTO) {
+		
 		return escalaServiceImpl.update(escalaDTO);
 	}
 
@@ -64,6 +68,7 @@ public class EscalaResouce extends GerericResouce<EscalaDTO, EscalaVO> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String delete(@PathParam("idEscala") Long idEscala) {
+		
 		return escalaServiceImpl.delete(idEscala);
 	}
 }

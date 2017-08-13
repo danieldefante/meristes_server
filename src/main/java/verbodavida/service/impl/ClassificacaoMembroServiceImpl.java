@@ -1,8 +1,7 @@
 package verbodavida.service.impl;
 
 import static java.util.Arrays.asList;
-import static verbodavida.dtos.ConverterEntity.converterDTOList;
-import static verbodavida.querys.ClassificacaoMembroQuery.getQueryByIdMinisterio;
+import static verbodavida.querys.ClassificacaoMembroQuery.getPaged;
 import static verbodavida.querys.ClassificacaoMembroQuery.getQueryCountRegisters;
 
 import java.math.BigInteger;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import verbodavida.dtos.ClassificacaoMembroDTO;
 import verbodavida.eaos.ClassificacaoMembroEAO;
-import verbodavida.entities.ClassificacaoMembro;
 import verbodavida.services.ClassificacaoMembroService;
 import verbodavida.utils.BeanConsultGroup;
 import verbodavida.utils.PagedResult;
@@ -21,31 +19,20 @@ public class ClassificacaoMembroServiceImpl extends ClassificacaoMembroService<C
 	ClassificacaoMembroEAO classificacaoMembroEAO = new ClassificacaoMembroEAO();
 	
 	@Override
-	public PagedResult<ClassificacaoMembroVO> findAll(int page, int size, Long idMinisterio) {
+	public PagedResult<ClassificacaoMembroVO> findPaged(int page, int size, Long idMinisterio, Long idPessoa) {
 		BeanConsultGroup beanConsultGroup = new BeanConsultGroup(page, size);
 		
-		List<ClassificacaoMembroVO> classificacaoMembroVOList = converterDTOList(ClassificacaoMembroVO.class, classificacaoMembroVOList = classificacaoMembroEAO.findPagedList(
-				ClassificacaoMembroVO.class, beanConsultGroup, getQueryByIdMinisterio(), asList("idMinisterio"), asList(idMinisterio)));
+		List<ClassificacaoMembroVO> classificacaoMembroVOList = 
+				classificacaoMembroEAO.executeSQLPaged(ClassificacaoMembroVO.class, beanConsultGroup,
+				getPaged(), asList("idMinisterio", "idPessoa"), asList(idMinisterio, idPessoa));
 		
-		BigInteger sizeDB = countRegister(getQueryCountRegisters(), asList("idMinisterio"), asList(idMinisterio));
+		BigInteger sizeDB = classificacaoMembroEAO.executeSQLOneResult(getQueryCountRegisters());
 		
-		return new PagedResult<ClassificacaoMembroVO> (sizeDB, classificacaoMembroVOList);
+//		if(!classificacaoMembroVOList.isEmpty() && !sizeDB.equals(null)){
+			
+			return new PagedResult<ClassificacaoMembroVO>(sizeDB, classificacaoMembroVOList);
+//		}else {
+//			throw new VDVException("Erro ao buscar classificação de membros.");
+//		}
 	}
-
-
-	@Override
-	public String delete(Long idClassificacaoMembro) {
-		return classificacaoMembroEAO.delete(idClassificacaoMembro);
-	}
-
-	@Override
-	public String insertList(List<ClassificacaoMembroDTO> classificacaoMembroDTOList) {
-		return classificacaoMembroEAO.insertList(converterDTOList(ClassificacaoMembro.class, classificacaoMembroDTOList));
-	}
-
-	@Override
-	public BigInteger countRegister(String sql, List<String> nameParam, List<Object> valueParam) {
-		return classificacaoMembroEAO.executeSQLOneResult(sql, nameParam, valueParam);
-	}
-	
 }

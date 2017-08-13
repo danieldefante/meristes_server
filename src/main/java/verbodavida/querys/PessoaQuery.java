@@ -9,4 +9,10 @@ public class PessoaQuery {
 				.toString();
 	}
 
+	public static String getPaged() {
+		return new StringBuilder()
+				.append(" SELECT idpessoa AS \"idPessoa\", nome , sobrenome FROM pessoa ORDER BY nome ASC ")
+				.toString();
+	}
+
 }

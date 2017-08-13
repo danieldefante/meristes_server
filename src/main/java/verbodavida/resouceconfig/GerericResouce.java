@@ -10,11 +10,11 @@ public class GerericResouce<T, R> {
 		return null;
 	};
 
-	public PagedResult findAll(int page, int size) {
+	public PagedResult<R> findPaged(int page, int size) {
 		return null;
 	}
 
-	public PagedResult findAll(int page, int size, Long id){
+	public PagedResult<R> findPaged(int page, int size, Long id){
 		return null;
 	};
 

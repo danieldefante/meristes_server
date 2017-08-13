@@ -1,7 +1,7 @@
 package verbodavida.service.impl;
 
 import static verbodavida.dtos.ConverterEntity.converterDTO;
-import static verbodavida.dtos.ConverterEntity.converterDTOList;
+import static verbodavida.querys.PessoaQuery.getPaged;
 import static verbodavida.querys.PessoaQuery.getQueryCountRegisters;
 
 import java.math.BigInteger;
@@ -13,6 +13,7 @@ import verbodavida.entities.Pessoa;
 import verbodavida.services.PessoaService;
 import verbodavida.utils.BeanConsultGroup;
 import verbodavida.utils.PagedResult;
+import verbodavida.utils.VDVException;
 import verbodavida.vos.PessoaVO;
 
 public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
@@ -20,46 +21,63 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 	private PessoaEAO pessoaEAO = new PessoaEAO();
 	
 	@Override
-	public PagedResult<PessoaVO> findAll(int page, int size) {
+	public PagedResult<PessoaVO> findPaged(int page, int size) {
 		BeanConsultGroup beanConsultaGroup = new BeanConsultGroup(page, size);
-		List<Pessoa> pessoaList = pessoaEAO.findAll(Pessoa.class, beanConsultaGroup);
 		
-		if(pessoaList != null){
-			List<PessoaVO> pessoaVOList = converterDTOList(PessoaVO.class, pessoaList);
+		List<PessoaVO> pessoaVOList = pessoaEAO.executeSQLPaged(PessoaVO.class, beanConsultaGroup, getPaged());
+		
+		BigInteger sizeDB = pessoaEAO.executeSQLOneResult(getQueryCountRegisters());
+		
 			
-			BigInteger sizeDB = countRegister(getQueryCountRegisters(), null, null);
-			return new PagedResult<PessoaVO>(sizeDB, pessoaVOList);
-		}
-		
-		return null;
+		return new PagedResult<PessoaVO>(sizeDB, pessoaVOList);
 	}
 
 	@Override
 	public PessoaDTO find(Long idPessoa) {
 		Pessoa pessoa = pessoaEAO.find(Pessoa.class, idPessoa);
 
-		return pessoa == null ? null : 
-			converterDTO( PessoaDTO.class, pessoa);
+		if(!pessoa.equals(null)){
+			PessoaDTO pessoaDTO = converterDTO( PessoaDTO.class, pessoa);
+			
+			return pessoaDTO;
+		}else {
+			throw new VDVException("Erro ao buscar pessoa.");
+		}
 	}
 
 	@Override
 	public String insert(PessoaDTO pessoaDTO) {
-		return pessoaEAO.insert(converterDTO(Pessoa.class, pessoaDTO));
+		Pessoa pessoa = converterDTO(Pessoa.class, pessoaDTO);
+		
+		if(!pessoa.equals(null)){
+			
+			return pessoaEAO.insert(pessoa);
+		}else {
+			throw new VDVException("Erro ao inserir pessoa.");
+		}
 	}
 
 	@Override
-	public String update(PessoaDTO pessoa) {
-		return pessoaEAO.update(converterDTO(Pessoa.class, pessoa));
+	public String update(PessoaDTO pessoaDTO) {
+		Pessoa pessoa = converterDTO(Pessoa.class, pessoaDTO);
+		
+		if(!pessoa.equals(null)){
+			
+			return pessoaEAO.update(pessoa);
+		}else {
+			throw new VDVException("Erro ao atualizar pessoa.");
+		}
 	}
 
 	@Override
-	public String delete(Long id) {
-		return pessoaEAO.delete(id);
-	}
-	
-	@Override
-	public BigInteger countRegister(String sql, List<String> nameParams, List<Object> params) {
-		return pessoaEAO.executeSQLOneResult(sql, null, null);
+	public String delete(Long idPessoa) {
+		Pessoa pessoa = pessoaEAO.find(Pessoa.class, idPessoa);
+		
+		if(!pessoa.equals(null)){
+			return pessoaEAO.delete(idPessoa);
+		}else {
+			throw new VDVException("Erro ao excluir pessoa.");
+		}
 	}
 
 }

@@ -1,5 +1,7 @@
 package verbodavida.vos;
 
+import java.math.BigInteger;
+
 public class PessoaVO {
 
 	private Long idPessoa;
@@ -8,13 +10,13 @@ public class PessoaVO {
 
 	private String sobrenome;
 	
-	private Boolean escalado;
+	private boolean escalado;
 
 	public Long getIdPessoa() {
 		return idPessoa;
 	}
 
-	public void setIdPessoa(Integer idPessoa) {
+	public void setIdPessoa(BigInteger idPessoa) {
 		this.idPessoa = idPessoa.longValue();
 	}
 
@@ -34,11 +36,12 @@ public class PessoaVO {
 		this.sobrenome = sobrenome;
 	}
 
-	public Boolean getEscalado() {
+	public boolean getEscalado() {
 		return escalado;
 	}
 
-	public void setEscalado(Boolean escalado) {
+	public void setEscalado(boolean escalado) {
 		this.escalado = escalado;
 	}
+
 }

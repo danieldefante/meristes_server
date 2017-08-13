@@ -3,11 +3,10 @@ package verbodavida.querys;
 public class ClassificacaoMembroQuery {
 
 
-	public static String getQueryByIdMinisterio() {
-		
+	public static String getPaged() {
 		return new StringBuilder()
-				.append(" from ClassificacaoMembro as c ")
-				.append(" where c.ministerio.idMinisterio = :idMinisterio ")
+				.append(" SELECT idclassificacao_membro AS \"idClassificacaoMembro\", descricao FROM classificacao_membro ")
+				.append(" where ministerio_idministerio = :idMinisterio ORDER BY descricao ASC ")
 				.toString();
 	}
 

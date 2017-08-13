@@ -1,5 +1,7 @@
 package verbodavida.vos;
 
+import java.math.BigInteger;
+
 public class GrupoVO {
 
 	private Long idGrupo;
@@ -12,8 +14,8 @@ public class GrupoVO {
 		return idGrupo;
 	}
 
-	public void setIdGrupo(Long idGrupo) {
-		this.idGrupo = idGrupo;
+	public void setIdGrupo(BigInteger idGrupo) {
+		this.idGrupo = idGrupo.longValue();
 	}
 
 	public String getNome() {

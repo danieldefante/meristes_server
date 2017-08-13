@@ -36,8 +36,9 @@ public class PessoaResouce extends GerericResouce<PessoaDTO, PessoaVO>{
     @Override
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PagedResult findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
-    	return pessoaServiceImpl.findAll(page, size);
+    public PagedResult<PessoaVO> findPaged(@QueryParam("page") int page, @QueryParam("size") int size) {
+    	
+    	return pessoaServiceImpl.findPaged(page, size);
     }
 
     @GET
@@ -64,7 +65,7 @@ public class PessoaResouce extends GerericResouce<PessoaDTO, PessoaVO>{
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String update(PessoaDTO pessoaDTO) {
-    	System.out.println(pessoaDTO);
+
     	return pessoaServiceImpl.update(pessoaDTO);
     }
 

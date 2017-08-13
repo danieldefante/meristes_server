@@ -1,28 +1,22 @@
 package verbodavida.service.impl;
 
-import static java.util.Arrays.asList;
 import static verbodavida.dtos.ConverterEntity.converterDTO;
-import static verbodavida.dtos.ConverterEntity.converterDTOList;
+import static verbodavida.querys.MinisterioQuery.getPaged;
 import static verbodavida.querys.MinisterioQuery.getQueryCountRegisters;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import verbodavida.dtos.MinisterioDTO;
-import verbodavida.eaos.ClassificacaoMembroEAO;
 import verbodavida.eaos.MinisterioEAO;
 import verbodavida.entities.ClassificacaoMembro;
 import verbodavida.entities.Grupo;
 import verbodavida.entities.Ministerio;
-import verbodavida.querys.ClassificacaoMembroQuery;
 import verbodavida.services.MinisterioService;
 import verbodavida.utils.BeanConsultGroup;
 import verbodavida.utils.PagedResult;
 import verbodavida.utils.VDVException;
-import verbodavida.vos.ClassificacaoMembroVO;
 import verbodavida.vos.MinisterioVO;
 
 public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, MinisterioVO> {
@@ -33,18 +27,16 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 	public String insert(MinisterioDTO ministerioDTO) {
 		Ministerio ministerio = converterDTO(Ministerio.class, ministerioDTO);
 		
-		Set<ClassificacaoMembro> classificacaoMembros = ministerio.getClassificacaoMembros();
-		classificacaoMembros.forEach(classMembro->{
-			classMembro.setMinisterio(ministerio);
-		});
-		
-		
-		Set<Grupo> grupos = ministerio.getGrupos();
-		grupos.forEach(grupo->{
-			grupo.setMinisterio(ministerio);
-		});
-		
-		return ministerioEAO.insert(ministerio);
+		if(!ministerio.equals(null)){
+			
+			criarPopularClassificacao(ministerio);
+			
+			criarPopularGrupo(ministerio);
+	
+			return ministerioEAO.insert(ministerio);
+		}
+
+			throw new VDVException("Erro ao inserir ministério.");
 	}
 
 	@Override
@@ -53,59 +45,88 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 		if(!ministerioEAO.find(Ministerio.class, ministerioDTO.getIdMinisterio()).equals(null)){
 			Ministerio ministerio = converterDTO(Ministerio.class, ministerioDTO);
 
-			Set<ClassificacaoMembro> classificacaoMembros = ministerio.getClassificacaoMembros();
-			classificacaoMembros.forEach(classMembro->{
-				classMembro.setMinisterio(ministerio);
-			});
+			if(!ministerio.equals(null)){
+				criarPopularClassificacao(ministerio);
+				
+				criarPopularGrupo(ministerio);
+				
+				return ministerioEAO.update(ministerio);
+			}else {
+				
+				throw new VDVException("Erro ao atualizar ministério.");
+			}
 			
-			Set<Grupo> grupos = ministerio.getGrupos();
-			grupos.forEach(grupo->{
-				grupo.setMinisterio(ministerio);
-			});
-			
-			return ministerioEAO.update(ministerio);
 		} else {
-			throw new VDVException("Ministério não encontrado.");
+			throw new VDVException("Erro ao atualizar ministério.");
 		}
 		
 	}
 
 	@Override
 	public String delete(Long idMinisterio) {
-		return ministerioEAO.delete(idMinisterio);
+		
+		Ministerio ministerio = ministerioEAO.find(Ministerio.class, idMinisterio);
+
+		if(!ministerio.equals(null)){
+			
+			return ministerioEAO.delete(idMinisterio);
+		}else {
+			throw new VDVException("Erro ao excluir ministério.");
+		}
 	}
 
 	@Override
 	public MinisterioDTO find(Long idMinisterio) {
-		 return converterDTO(
-				 MinisterioDTO.class,
-				 ministerioEAO.find(Ministerio.class, idMinisterio));
+		 
+		Ministerio ministerio = ministerioEAO.find(Ministerio.class, idMinisterio);
+		
+		if(!ministerio.equals(null)){
+			
+			return converterDTO(MinisterioDTO.class, ministerio);
+		}else {
+			
+			throw new VDVException("Erro ao buscar ministério.");
+		}
 	}
 
 	@Override
-	public PagedResult<MinisterioVO>  findAll(int page, int size) {
+	public PagedResult<MinisterioVO> findPaged(int page, int size) {
 		BeanConsultGroup beanConsultGroup = new BeanConsultGroup(page, size);
-		List<MinisterioVO> ministerioVOList = converterDTOList(MinisterioVO.class, 
-				ministerioEAO.findAll(Ministerio.class, beanConsultGroup));
 		
-		BigInteger sizeDB = countRegister(getQueryCountRegisters(), null, null);
+		List<MinisterioVO> ministerioVOList = ministerioEAO.executeSQLPaged(MinisterioVO.class, beanConsultGroup, getPaged());
 		
+		BigInteger sizeDB = ministerioEAO.executeSQLOneResult(getQueryCountRegisters());
+		
+			
 		return new PagedResult<MinisterioVO>(sizeDB, ministerioVOList);
 	}
 
-	public PagedResult<ClassificacaoMembroVO>  findClassificacaoByMinisterio(int page, int size) {
-		BeanConsultGroup beanConsultGroup = new BeanConsultGroup(page, size);
+	private void criarPopularClassificacao(Ministerio ministerio) {
+		Set<ClassificacaoMembro> classificacaoMembros = ministerio.getClassificacaoMembros();
 		
-		ClassificacaoMembroEAO classificacaoMembroEAO = new ClassificacaoMembroEAO();
-		List<ClassificacaoMembro> classificacaoMembroList = classificacaoMembroEAO.findPagedList(ClassificacaoMembro.class, beanConsultGroup,
-				ClassificacaoMembroQuery.getQueryByIdMinisterio(), asList("idMinisterio"), asList("idMinisterio"));
-		
-		return null;
+		if(!classificacaoMembros.isEmpty()){
+			
+			classificacaoMembros.forEach(classMembro -> {
+				classMembro.setMinisterio(ministerio);
+			});
+		}else{
+			ClassificacaoMembro classificacaoMembro = new ClassificacaoMembro();
+			classificacaoMembro.setDescricao("Sem classificação");
+		}
 	}
 	
-	@Override
-	public BigInteger countRegister(String query, List<String> nameParams, List<Object> params) {
-		return ministerioEAO.executeSQLOneResult(query, null, null);
+	private void criarPopularGrupo(Ministerio ministerio) {
+		Set<Grupo> grupos = ministerio.getGrupos();
+		if(!grupos.isEmpty()){
+			
+			grupos.forEach(grupo->{
+				grupo.setMinisterio(ministerio);
+			});
+			
+		}else{
+			Grupo grupo = new Grupo();
+			grupo.setNome("Principal");
+			grupo.setDescricao("Este ministério consiste somente em um grupo");
+		}
 	}
-
 }

@@ -13,38 +13,73 @@ import verbodavida.utils.PersistDB;
 
 public class IEAO {
 
-	public <T> List<T> findAll(Class<T> clazz) {
-		return findAllEntity(clazz);
-	}
-
-	public <T> List<T> findAll(Class<T> clazz, BeanConsultGroup beanConsultGroup) {
-		return findAllEntity(clazz, beanConsultGroup);
-	}
+	
+	///FINDS
 
 	public <T> T find(Class<T> clazz, Long id) {
 		return findEntity(clazz, id);
 	}
-
-	public <T> List<T> findPagedList(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql, List<String> nameParam, List<Object> valueParam) {
-		return PersistDB.executeHQL(clazz, beanConsultGroup, sql,  nameParam,  valueParam);
-	}
-
-	public <T> T executeHQLOneResult(String sql, List<String> namesParamList, List<Object> valuesParamList) {
+	
+	public <T> T find(Class<T> clazz, String sql, List<String> namesParamList, List<Object> valuesParamList) {
 		return PersistDB.executeHQLOneResult( sql,  namesParamList,  valuesParamList);
 	}
 
+	///LISTS
+	public <T> List<T> findAll(Class<T> clazz) {
+		return findAllEntity(clazz);
+	}
+	
+//	public <T> List<T> findPagedList(Class<T> clazz, BeanConsultGroup beanConsultGroup) {
+//		return findAllEntity(clazz, beanConsultGroup);
+//	}
+
+//	public <T> List<T> findPagedList(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql, List<String> nameParam, List<Object> valueParam) {
+//		return PersistDB.executeHQL(clazz, beanConsultGroup, sql,  nameParam,  valueParam);
+//	}
+
+
+
+	
+	///SQLS
+	public <T> T executeSQLOneResult(String sql) {
+		return PersistDB.executeSQLOneResult(sql);
+	}
+	
+	public <T> T executeSQLOneResult(Class<T> clazz, String sql) {
+		return PersistDB.executeSQLOneResult(clazz, sql);
+	}
+	
 	public <T> T executeSQLOneResult(String sql, List<String> namesParamList, List<Object> valuesParamList) {
 		return PersistDB.executeSQLOneResult(sql, namesParamList,  valuesParamList);
 	}
 
-	public <T> List<T> executeSQL(String sql, List<String> namesParamList, List<Object> valuesParamList) {
-		return PersistDB.executeSQL( sql,  namesParamList,  valuesParamList);
+	public <T> T executeSQLOneResult(Class<T> clazz, String sql, List<String> namesParamList, List<Object> valuesParamList) {
+		return PersistDB.executeSQLOneResult(clazz, sql, namesParamList,  valuesParamList);
 	}
 
+
+//	public Object executeSQL(String sql, List<String> namesParamList, List<Object> valuesParamList) {
+//		return PersistDB.executeSQL( sql,  namesParamList,  valuesParamList);
+//	}
+
+	//PAGED
+	public <T> List<T> executeSQLPaged(BeanConsultGroup beanConsultGroup, String sql) {
+		return PersistDB.executeSQL(beanConsultGroup, sql);
+	}
+	
+	public <T> List<T> executeSQLPaged(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql) {
+		return PersistDB.executeSQL(clazz,  beanConsultGroup, sql);
+	}
+	
 	public <T> List<T> executeSQLPaged(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql, List<String> namesParamList, List<Object> valuesParamList) {
 		return PersistDB.executeSQL(clazz, beanConsultGroup,  sql,  namesParamList,  valuesParamList);
 	}
 
+	
+	
+	
+	
+	
 	public <T> String insert(T entity) {
 		return insertEntity(entity);
 	}
