@@ -61,7 +61,7 @@ public class VinculoPessoaGrupo  implements Serializable {
         this.pessoa = pessoa;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="data_vinculacao", length=13)
     public Date getDataVinculacao() {
         return this.dataVinculacao;
@@ -71,7 +71,7 @@ public class VinculoPessoaGrupo  implements Serializable {
         this.dataVinculacao = dataVinculacao;
     }
     
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="vinculo_pessoa_grupo")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="vinculoPessoaGrupo")
     public Set<Escala> getEscalas() {
         return this.escalas;
     }

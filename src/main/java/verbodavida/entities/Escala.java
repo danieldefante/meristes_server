@@ -1,10 +1,14 @@
 package verbodavida.entities;
 
 
+import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,22 +18,24 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="escala", schema="public")
-public class Escala implements java.io.Serializable {
+public class Escala implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int idescala;
+
+    private long idescala;
     private VinculoPessoaGrupo vinculoPessoaGrupo;
-    private FuncaoMinisterial funcaoMinisterial;
+    private long funcaoMinisterialIdfuncaoMinisterial;
     private Date dataInicial;
     private Date dataFinal;
 
     @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idescala", unique=true, nullable=false)
-    public int getIdescala() {
+    public long getIdescala() {
         return this.idescala;
     }
     
-    public void setIdescala(int idescala) {
+    public void setIdescala(long idescala) {
         this.idescala = idescala;
     }
 
@@ -43,17 +49,17 @@ public class Escala implements java.io.Serializable {
         this.vinculoPessoaGrupo = vinculoPessoaGrupo;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="funcao_ministerial_idfuncao_ministerial", nullable=false)
-    public FuncaoMinisterial getFuncaoMinisterial() {
-    	return this.funcaoMinisterial;
+    
+    @Column(name="funcao_ministerial_idfuncao_ministerial", nullable=false)
+    public long getFuncaoMinisterialIdfuncaoMinisterial() {
+        return this.funcaoMinisterialIdfuncaoMinisterial;
     }
     
-    public void setFuncaoMinisterial(FuncaoMinisterial funcaoMinisterial) {
-    	this.funcaoMinisterial = funcaoMinisterial;
+    public void setFuncaoMinisterialIdfuncaoMinisterial(long funcaoMinisterialIdfuncaoMinisterial) {
+        this.funcaoMinisterialIdfuncaoMinisterial = funcaoMinisterialIdfuncaoMinisterial;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="data_inicial", length=13)
     public Date getDataInicial() {
         return this.dataInicial;
@@ -63,15 +69,13 @@ public class Escala implements java.io.Serializable {
         this.dataInicial = dataInicial;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="data_final", length=13)
     public Date getDataFinal() {
-    	return this.dataFinal;
+        return this.dataFinal;
     }
     
     public void setDataFinal(Date dataFinal) {
-    	this.dataFinal = dataFinal;
+        this.dataFinal = dataFinal;
     }
 }
-
-

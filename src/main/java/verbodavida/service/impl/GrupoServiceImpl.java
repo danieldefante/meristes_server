@@ -6,11 +6,13 @@ import static verbodavida.dtos.ConverterEntity.converterDTOList;
 import static verbodavida.querys.GrupoQuery.getQuery;
 import static verbodavida.querys.GrupoQuery.getQueryCountMembros;
 import static verbodavida.querys.GrupoQuery.getQueryCountRegisters;
+import static verbodavida.querys.GrupoQuery.getQueryPessoasVinculo;
 import static verbodavida.querys.GrupoQuery.getSQLMembrosGrupo;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import verbodavida.dtos.GrupoDTO;
@@ -21,6 +23,7 @@ import verbodavida.entities.Grupo;
 import verbodavida.entities.Pessoa;
 import verbodavida.entities.VinculoPessoaGrupo;
 import verbodavida.querys.GrupoQuery;
+import verbodavida.querys.PessoaQuery;
 import verbodavida.services.GrupoService;
 import verbodavida.utils.BeanConsultGroup;
 import verbodavida.utils.PagedResult;
@@ -107,25 +110,47 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 		}
 	}
 
-	public String vincularPessoa(Long idMinisterio, Long idGrupo, Long idPessoa) {
-		Pessoa pessoa = new PessoaEAO().find(Pessoa.class, idPessoa);
+	public String vincularPessoas(Long idMinisterio, Long idGrupo, Long idFuncaoMinisterial, List<PessoaVO> pessoaVOList) {
+		
+		PessoaEAO pessoaEAO = new PessoaEAO();
+		
+		List<Pessoa> pessoaList = new ArrayList<Pessoa>();
+		List<VinculoPessoaGrupo> vinculoPessoaGrupoList = new ArrayList<VinculoPessoaGrupo>();
+		
 		Grupo grupo = grupoEAO.find(Grupo.class, idGrupo);
+		
 
-
-		if(!pessoa.equals(null) && !grupo.equals(null)){
-			VinculoPessoaGrupo vinculoPessoaGrupo = new VinculoPessoaGrupo();
-			vinculoPessoaGrupo.setPessoa(pessoa);
-			vinculoPessoaGrupo.setGrupo(grupo);
-			vinculoPessoaGrupo.setDataVinculacao(new Date());
+		if(pessoaVOList != null && grupo != null ){
+			
+//			for(Long idPessoa : pessoaVOList){
+//				
+//				Pessoa pessoa = pessoaEAO.find(Pessoa.class, idPessoa);
+//				if(pessoa != null){
+//					pessoaList.add(pessoa);
+//					
+//					vinculoPessoaGrupoList.add(pupularVinculoPessoaGrupo(pessoa, grupo));
+//				} else {
+//					throw new VDVException("Erro em buscar pessoas.");
+//				}
+//			}
+				
 			VincularPessoaGrupoEAO vincularPessoaGrupoEAO = new VincularPessoaGrupoEAO();
 			
-			return vincularPessoaGrupoEAO.insert(vinculoPessoaGrupo);
-		
+			return vincularPessoaGrupoEAO.insert(vinculoPessoaGrupoList);
+			
 		} else {
-		
 			throw new VDVException("Erro ao vincular pessoa ao grupo.");
 		}
-		 
+	}
+	
+	private VinculoPessoaGrupo pupularVinculoPessoaGrupo(Pessoa pessoa, Grupo grupo) {
+		
+		VinculoPessoaGrupo vinculoPessoaGrupo = new VinculoPessoaGrupo();
+		vinculoPessoaGrupo.setPessoa(pessoa);
+		vinculoPessoaGrupo.setGrupo(grupo);
+		vinculoPessoaGrupo.setDataVinculacao(new Timestamp(System.currentTimeMillis()));
+		
+		return vinculoPessoaGrupo;
 	}
 
 	public PagedResult<PessoaVO> pagedMembros(int page, int size, Long idMinisterio, Long idGrupo) {
@@ -144,5 +169,21 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 			throw new VDVException("Erro ao encontar membros.");
 		}
 	}
-
+	
+	public PagedResult<PessoaVO> pagedPessoasVinculo(int page, int size, Long idMinisterio, Long idGrupo, Long idFuncaoMinisterial) {
+		
+		BeanConsultGroup beanConsultGroup = new BeanConsultGroup(page, size);
+		
+		List<PessoaVO> pessoaVOList = grupoEAO.executeSQLPaged(PessoaVO.class, beanConsultGroup, getQueryPessoasVinculo(), 
+				asList("idMinisterio", "idGrupo", "idFuncaoMinisterial"), asList(idMinisterio, idGrupo, idFuncaoMinisterial));
+		
+		BigInteger sizeBD = grupoEAO.executeSQLOneResult(PessoaQuery.getQueryCountRegisters());
+		
+		if (pessoaVOList != null && sizeBD != null) {
+			
+			return new PagedResult<PessoaVO>(sizeBD, pessoaVOList);
+		} else {
+			throw new VDVException("Erro ao encontar membros.");
+		}
+	}
 }

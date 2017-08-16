@@ -1,5 +1,7 @@
 package verbodavida.resouces;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -72,13 +74,16 @@ public class GrupoResouce extends GerericResouce<GrupoDTO, GrupoVO>{
 		return grupoServiceImpl.delete(idGrupo);
 	}
 	
-	@GET
-	@Path("/{idGrupo}/vincularpessoa/{idPessoa}")
+	@POST
+	@Path("/{idGrupo}/funcaoministerial/{idFuncaoMinisterial}/vincularpessoas")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String vincularPessoa(@PathParam("idMinisterio") Long idMinisterio, @PathParam("idGrupo") Long idGrupo, @PathParam("idPessoa") Long idPessoa) {
+	public String vincularPessoas(@PathParam("idMinisterio") Long idMinisterio, 
+								  @PathParam("idGrupo") Long idGrupo, 
+								  @PathParam("idFuncaoMinisterial") Long idFuncaoMinisterial,
+								  List<PessoaVO> pessoaVOList) {
 		
-		return grupoServiceImpl.vincularPessoa(idMinisterio, idGrupo, idPessoa);
+		return grupoServiceImpl.vincularPessoas(idMinisterio, idGrupo, idFuncaoMinisterial, pessoaVOList);
 	}
 	
     @GET
@@ -91,5 +96,18 @@ public class GrupoResouce extends GerericResouce<GrupoDTO, GrupoVO>{
 									  			@PathParam("idGrupo") Long idGrupo) {
 			
     	return grupoServiceImpl.pagedMembros(page, size, idMinisterio, idGrupo);
+	}
+    
+    @GET
+	@Path("/{idGrupo}/pessoasvinculo/funcaoministerial/{idFuncaoMinisterial}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public PagedResult<PessoaVO> findAllPessoasVinculo(@QueryParam("page") int page,
+									  				   @QueryParam("size") int size,
+									  				   @PathParam("idMinisterio") Long idMinisterio,
+									  				   @PathParam("idGrupo") Long idGrupo,
+    												   @PathParam("idFuncaoMinisterial") Long idFuncaoMinisterial) {
+			
+    	return grupoServiceImpl.pagedPessoasVinculo(page, size, idMinisterio, idGrupo, idFuncaoMinisterial);
 	}
 }

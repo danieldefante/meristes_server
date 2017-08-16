@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name="pessoa", schema="public")
@@ -32,8 +31,6 @@ public class Pessoa  implements Serializable {
     private String sobrenome;
     private Date datanascimento;
     private Set<VinculoPessoaGrupo> vinculoPessoaGrupos = new HashSet<VinculoPessoaGrupo>(0);
-    
-//    private Boolean escalado;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -102,17 +99,6 @@ public class Pessoa  implements Serializable {
     public void setVinculoPessoaGrupos(Set<VinculoPessoaGrupo> vinculoPessoaGrupos) {
         this.vinculoPessoaGrupos = vinculoPessoaGrupos;
     }
-    
-//    @Transient
-//    @Column(name="escalado")
-//	public Boolean getEscalado() {
-//		return escalado;
-//	}
-//
-//	public void setEscalado(Boolean escalado) {
-//		this.escalado = escalado;
-//	}
-
 }
 
 

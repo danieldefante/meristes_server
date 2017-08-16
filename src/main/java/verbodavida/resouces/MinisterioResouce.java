@@ -83,11 +83,22 @@ public class MinisterioResouce extends GerericResouce<MinisterioDTO, MinisterioV
     @Path("/{idMinisterio}/funcaoministerial/pessoa/{idPessoa}")
  	@Consumes(MediaType.APPLICATION_JSON)
  	@Produces(MediaType.APPLICATION_JSON)
-     public PagedResult<FuncaoMinisterialVO> pagedFuncaoMinisterial(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio, @PathParam("idPessoa") Long idPessoa) {
+	public PagedResult<FuncaoMinisterialVO> pagedFuncaoMinisterial(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio, @PathParam("idPessoa") Long idPessoa) {
+	 	
+		FuncaoMinisterialServiceImpl funcaoMinisterialServiceImpl = new FuncaoMinisterialServiceImpl();
+	 	
+		return funcaoMinisterialServiceImpl.findPaged(page, size, idMinisterio, idPessoa);
+	}
+    
+    @GET
+    @Path("/{idMinisterio}/funcoesministerio")
+ 	@Consumes(MediaType.APPLICATION_JSON)
+ 	@Produces(MediaType.APPLICATION_JSON)
+     public PagedResult<FuncaoMinisterialVO> pagedFuncoesMinistero(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio ) {
      	
     	FuncaoMinisterialServiceImpl funcaoMinisterialServiceImpl = new FuncaoMinisterialServiceImpl();
      	
-    	return funcaoMinisterialServiceImpl.findPaged(page, size, idMinisterio, idPessoa);
+    	return funcaoMinisterialServiceImpl.findPaged(page, size, idMinisterio);
      }
 
 }

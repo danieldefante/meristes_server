@@ -1,8 +1,10 @@
 package verbodavida.service.impl;
 
 import static java.util.Arrays.asList;
-import static verbodavida.querys.FuncaoMinisterialQuery.getPaged;
-import static verbodavida.querys.FuncaoMinisterialQuery.getQueryCountRegisters;
+import static verbodavida.querys.FuncaoMinisterialQuery.getPagedPessoa;
+import static verbodavida.querys.FuncaoMinisterialQuery.getPagedMinisterio;
+import static verbodavida.querys.FuncaoMinisterialQuery.getQueryCountRegistersPessoa;
+import static verbodavida.querys.FuncaoMinisterialQuery.getQueryCountRegistersMinisterio;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -23,9 +25,22 @@ public class FuncaoMinisterialServiceImpl extends ClassificacaoMembroService<Voi
 		
 		List<FuncaoMinisterialVO> funcaoMinisterialVOList = 
 				funcaoMinisterialEAO.executeSQLPaged(FuncaoMinisterialVO.class, beanConsultGroup,
-				getPaged(), asList("idMinisterio", "idPessoa"), asList(idMinisterio, idPessoa));
+				getPagedPessoa(), asList("idMinisterio", "idPessoa"), asList(idMinisterio, idPessoa));
 		
-		BigInteger sizeDB = funcaoMinisterialEAO.executeSQLOneResult(getQueryCountRegisters(), asList("idMinisterio", "idPessoa"), asList(idMinisterio, idPessoa));
+		BigInteger sizeDB = funcaoMinisterialEAO.executeSQLOneResult(getQueryCountRegistersPessoa(), asList("idMinisterio", "idPessoa"), asList(idMinisterio, idPessoa));
+		
+		return new PagedResult<FuncaoMinisterialVO>(sizeDB, funcaoMinisterialVOList);
+	}
+
+	@Override
+	public PagedResult<FuncaoMinisterialVO> findPaged(int page, int size, Long idMinisterio) {
+		BeanConsultGroup beanConsultGroup = new BeanConsultGroup(page, size);
+		
+		List<FuncaoMinisterialVO> funcaoMinisterialVOList = 
+				funcaoMinisterialEAO.executeSQLPaged(FuncaoMinisterialVO.class, beanConsultGroup,
+						getPagedMinisterio(), asList("idMinisterio"), asList(idMinisterio));
+		
+		BigInteger sizeDB = funcaoMinisterialEAO.executeSQLOneResult(getQueryCountRegistersMinisterio(), asList("idMinisterio"), asList(idMinisterio));
 		
 		return new PagedResult<FuncaoMinisterialVO>(sizeDB, funcaoMinisterialVOList);
 	}
