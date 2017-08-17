@@ -71,20 +71,29 @@ public class GrupoQuery {
 	
 	public static String getQueryPessoasVinculo() {
 		return new StringBuilder()
-			.append("SELECT p.idpessoa as \"idPessoa\", p.nome, p.sobrenome, ")
-			.append("	CASE WHEN EXISTS( ")
-			.append("		SELECT * FROM vinculo_pessoa_grupo v ")
-			.append("		INNER JOIN grupo g ON (g.idgrupo = v.grupo_idgrupo ) ")
-			.append("		INNER JOIN pessoa pa ON (pa.idpessoa = v.pessoa_idpessoa) ")
-			.append("		LEFT JOIN funcao_ministerial f ON (f.pessoa_idpessoa = pa.idpessoa) ")
-			.append("		WHERE v.pessoa_idpessoa = p.idpessoa ")
-			.append("		AND v.grupo_idgrupo = :idGrupo ")
-			.append("		AND g.ministerio_idministerio = :idMinisterio ")
-			.append("		AND f.idfuncao_ministerial = :idFuncaoMinisterial ")
-			.append("	) THEN true ELSE false END AS \"escaladoVinculado\" ")
-			.append("FROM pessoa p ")
-			.append("ORDER BY p.nome ASC ")
+			.append(" SELECT p.idpessoa, p.nome, p.sobrenome, ")
+			.append(" 		CASE WHEN v.grupo_idgrupo = :idGrupo AND v.ativo AND g.ministerio_idministerio = :idMinisterio")
+			.append(" 		THEN true ELSE false END AS ativo ")
+			.append("   FROM pessoa p ")
+			.append(" LEFT JOIN vinculo_pessoa_grupo v ON (v.pessoa_idpessoa = p.idpessoa) ")
+			.append(" LEFT JOIN grupo g ON (g.idgrupo = v.grupo_idgrupo) ")
+			.append(" ORDER BY p.nome ASC ")
 			.toString();
+//		return new StringBuilder()
+//				.append("SELECT p.idpessoa as \"idPessoa\", p.nome, p.sobrenome, ")
+//				.append("	CASE WHEN EXISTS( ")
+//				.append("		SELECT * FROM vinculo_pessoa_grupo v ")
+//				.append("		INNER JOIN grupo g ON (g.idgrupo = v.grupo_idgrupo ) ")
+//				.append("		INNER JOIN pessoa pa ON (pa.idpessoa = v.pessoa_idpessoa) ")
+//				.append("		LEFT JOIN funcao_ministerial f ON (f.pessoa_idpessoa = pa.idpessoa) ")
+//				.append("		WHERE v.pessoa_idpessoa = p.idpessoa ")
+//				.append("		AND v.grupo_idgrupo = :idGrupo ")
+//				.append("		AND g.ministerio_idministerio = :idMinisterio ")
+//				.append("		AND f.idfuncao_ministerial = :idFuncaoMinisterial ")
+//				.append("	) THEN true ELSE false END AS \"escaladoVinculado\" ")
+//				.append("FROM pessoa p ")
+//				.append("ORDER BY p.nome ASC ")
+//				.toString();
 	}
 	
 

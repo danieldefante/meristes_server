@@ -118,21 +118,24 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 		List<VinculoPessoaGrupo> vinculoPessoaGrupoList = new ArrayList<VinculoPessoaGrupo>();
 		
 		Grupo grupo = grupoEAO.find(Grupo.class, idGrupo);
-		
 
 		if(pessoaVOList != null && grupo != null ){
 			
-//			for(Long idPessoa : pessoaVOList){
-//				
-//				Pessoa pessoa = pessoaEAO.find(Pessoa.class, idPessoa);
-//				if(pessoa != null){
-//					pessoaList.add(pessoa);
-//					
-//					vinculoPessoaGrupoList.add(pupularVinculoPessoaGrupo(pessoa, grupo));
-//				} else {
-//					throw new VDVException("Erro em buscar pessoas.");
-//				}
-//			}
+			pessoaVOList.forEach(p->{
+				
+				Pessoa pessoa = pessoaEAO.find(Pessoa.class, p.getIdPessoa());
+				if(pessoa != null){
+					if(p.getAtivo()) {
+						pessoaList.add(pessoa);
+					
+						vinculoPessoaGrupoList.add(pupularVinculoPessoaGrupo(pessoa, grupo));
+					} else {
+						System.out.println("falta implementar exclusao");
+					}
+				} else {
+					throw new VDVException("Erro em buscar pessoas.");
+				}
+			});
 				
 			VincularPessoaGrupoEAO vincularPessoaGrupoEAO = new VincularPessoaGrupoEAO();
 			

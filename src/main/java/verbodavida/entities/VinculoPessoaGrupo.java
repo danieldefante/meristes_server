@@ -27,8 +27,8 @@ public class VinculoPessoaGrupo  implements Serializable {
     private Grupo grupo;
     private Pessoa pessoa;
     private Date dataVinculacao;
+    private Boolean ativo;
     private Set<Escala> escalas = new HashSet<Escala>(0);
-
    
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,6 +69,15 @@ public class VinculoPessoaGrupo  implements Serializable {
     
     public void setDataVinculacao(Date dataVinculacao) {
         this.dataVinculacao = dataVinculacao;
+    }
+    
+    @Column(name="ativo")
+    public Boolean getAtivo() {
+    	return ativo;
+    }
+    
+    public void setAtivo(Boolean ativo) {
+    	this.ativo = ativo;
     }
     
     @OneToMany(fetch=FetchType.LAZY, mappedBy="vinculoPessoaGrupo")

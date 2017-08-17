@@ -10,7 +10,7 @@ public class PessoaVO {
 
 	private String sobrenome;
 	
-	private boolean escaladoVinculado;
+	private boolean ativo;
 
 	public Long getIdPessoa() {
 		return idPessoa;
@@ -36,12 +36,12 @@ public class PessoaVO {
 		this.sobrenome = sobrenome;
 	}
 
-	public boolean getEscaladoVinculado() {
-		return escaladoVinculado;
+	public boolean getAtivo() {
+		return ativo;
 	}
 
-	public void setEscaladoVinculado(boolean escaladoVinculado) {
-		this.escaladoVinculado = escaladoVinculado;
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 }
