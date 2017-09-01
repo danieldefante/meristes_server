@@ -7,7 +7,7 @@ public class GrupoBuilder {
 	private Grupo grupo = new Grupo();
 	
 	public GrupoBuilder withIdGrupo(Long idGrupo) {
-		grupo.setIdGrupo(idGrupo);
+//		grupo.setIdGrupo(idGrupo);
 		return this;
 	}
 

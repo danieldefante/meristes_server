@@ -1,6 +1,6 @@
 package verbodavida.validators;
 
-public interface IValidador {
+public interface IValidador<T> {
 
-	<T> Boolean camposObrigatorios(T entity);
+	Boolean camposObrigatorios(T entity);
 }

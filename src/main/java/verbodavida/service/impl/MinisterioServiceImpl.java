@@ -3,6 +3,11 @@ package verbodavida.service.impl;
 import static verbodavida.dtos.ConverterEntity.converterDTO;
 import static verbodavida.querys.MinisterioQuery.getPaged;
 import static verbodavida.querys.MinisterioQuery.getQueryCountRegisters;
+import static verbodavida.utils.CrudRespost.respost;
+import static verbodavida.utils.EnumVDVException.MINISTERIO_DELETE_ERROR;
+import static verbodavida.utils.EnumVDVException.MINISTERIO_DELETE_SUCCESS;
+import static verbodavida.utils.EnumVDVException.MINISTERIO_SAVE_ERROR;
+import static verbodavida.utils.EnumVDVException.MINISTERIO_SAVE_SUCCESS;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -27,13 +32,14 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 	public String insert(MinisterioDTO ministerioDTO) {
 		Ministerio ministerio = converterDTO(Ministerio.class, ministerioDTO);
 		
-		if(!ministerio.equals(null)){
+		if(ministerio != null){
 			
 			criarPopularClassificacao(ministerio);
 			
 			criarPopularGrupo(ministerio);
 	
-			return ministerioEAO.insert(ministerio);
+			Long respost = ministerioEAO.insert(ministerio);
+			return respost != null ? respost(MINISTERIO_SAVE_SUCCESS.getMsg(), true, respost) : respost(MINISTERIO_SAVE_ERROR.getMsg(), false, respost);
 		}
 
 			throw new VDVException("Erro ao inserir ministério.");
@@ -42,15 +48,15 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 	@Override
 	public String update(MinisterioDTO ministerioDTO) {
 		
-		if(!ministerioEAO.find(Ministerio.class, ministerioDTO.getIdMinisterio()).equals(null)){
+		if(ministerioEAO.find(Ministerio.class, ministerioDTO.getIdMinisterio()) != null ){
 			Ministerio ministerio = converterDTO(Ministerio.class, ministerioDTO);
 
-			if(!ministerio.equals(null)){
+			if(ministerio != null){
 				criarPopularClassificacao(ministerio);
 				
 				criarPopularGrupo(ministerio);
-				
-				return ministerioEAO.update(ministerio);
+				Boolean respost = ministerioEAO.update(ministerio);
+				return respost == true ? respost(MINISTERIO_SAVE_SUCCESS.getMsg(), respost, null) : respost(MINISTERIO_SAVE_ERROR.getMsg(), respost, null);
 			}else {
 				
 				throw new VDVException("Erro ao atualizar ministério.");
@@ -67,9 +73,10 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 		
 		Ministerio ministerio = ministerioEAO.find(Ministerio.class, idMinisterio);
 
-		if(!ministerio.equals(null)){
+		if(ministerio != null){
 			
-			return ministerioEAO.delete(idMinisterio);
+			Boolean respost = ministerioEAO.delete(idMinisterio);
+			return respost == true ? respost(MINISTERIO_DELETE_SUCCESS.getMsg(), respost, null) : respost(MINISTERIO_DELETE_ERROR.getMsg(), respost, null);
 		}else {
 			throw new VDVException("Erro ao excluir ministério.");
 		}
@@ -80,7 +87,7 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 		 
 		Ministerio ministerio = ministerioEAO.find(Ministerio.class, idMinisterio);
 		
-		if(!ministerio.equals(null)){
+		if(ministerio != null){
 			
 			return converterDTO(MinisterioDTO.class, ministerio);
 		}else {

@@ -13,21 +13,19 @@ import org.hibernate.transform.Transformers;
 
 public class PersistDB {
 
-    public static <T> String insertEntity(T entity){
-        String retorno = null;
+    public static <T> Long insertEntity(T entity){
+        Long retorno = null;
     	Session session = null;
         Transaction transaction = null;
         try {
 
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(entity);
+            retorno = (Long) session.save(entity);
             transaction.commit();
-            retorno = "success";
 
         } catch (Exception e) {
             transaction.rollback();
-            retorno = "error";
             System.out.println("ERROR PersistDB -> " + e);
         } finally {
             session.clear();
@@ -37,8 +35,8 @@ public class PersistDB {
 
     }
 
-    public static <T> String insertListEntitys(List<T> listEntitys){
-    	String retorno = null;
+    public static <T> Boolean insertListEntitys(List<T> listEntitys){
+    	Boolean retorno = null;
     	Session session = null;
     	Transaction transaction = null;
     	try {
@@ -51,11 +49,11 @@ public class PersistDB {
     		}
     		
     		transaction.commit();
-    		retorno = "success";
+    		retorno = true;
     		
     	} catch (Exception e) {
     		transaction.rollback();
-    		retorno = "error";
+    		retorno = false;
     		System.out.println("ERROR PersistDB -> " + e);
     	} finally {
     		session.clear();
@@ -151,13 +149,13 @@ public class PersistDB {
 	}
 
 	
-	public static String deleteEntity(Long id) {
+	public static Boolean deleteEntity(Long id) {
 		return null;
 	}
 
 	
-	public static <T> String updateEntity(T entity) {
-		 String retorno = null;
+	public static <T> Boolean updateEntity(T entity) {
+		Boolean retorno = null;
 	    	Session session = null;
 	        Transaction transaction = null;
 	        try {
@@ -166,18 +164,51 @@ public class PersistDB {
 	            transaction = session.beginTransaction();
 	            session.update(entity);
 	            transaction.commit();
-	            retorno = "success";
+	            retorno = true;
 
 	        } catch (Exception e) {
 	            transaction.rollback();
-	            retorno = "error";
+	            retorno = false;
 	            System.out.println("ERROR PersistDB -> " + e);
 	        } finally {
 	            session.clear();
 	            session.close();
 	        }
 			return retorno;
-	}			
+	}	
+	
+	
+	public static <T> Boolean updateListEntitys(List<T> listEntitys){
+		Boolean retorno = null;
+    	Session session = null;
+    	Transaction transaction = null;
+    	try {
+    		
+    		session = HibernateUtil.getSessionFactory().openSession();
+    		transaction = session.beginTransaction();
+    		
+    		for(T entity : listEntitys) {
+    			session.update(entity);    			
+    		}
+    		
+    		transaction.commit();
+    		retorno = true;
+    		
+    	} catch (Exception e) {
+    		transaction.rollback();
+    		retorno = false;
+    		System.out.println("ERROR PersistDB -> " + e);
+    	} finally {
+    		session.clear();
+    		session.close();
+    	}
+    	return retorno;
+    	
+    }
+	
+	
+	
+	
 
 	public static <T> List<T> executeHQL(Class<T> clazz, BeanConsultGroup beanConsultGroup, String sql, List<String> nameParams, List<Object> valueParam) {
 		
@@ -335,6 +366,11 @@ public class PersistDB {
 			
 			@SuppressWarnings("unchecked")
 			Query<T> query = session.createSQLQuery(sql).setResultTransformer( Transformers.aliasToBean(clazz));
+			
+			if (beanConsultGroup != null) {
+				query.setFirstResult(beanConsultGroup.getPageResolver());
+				query.setMaxResults(beanConsultGroup.getSize());
+			}
 			
 			list = query.setResultTransformer(Transformers.aliasToBean(clazz)).list();
 			

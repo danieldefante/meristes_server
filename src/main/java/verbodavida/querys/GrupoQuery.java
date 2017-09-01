@@ -36,27 +36,43 @@ public class GrupoQuery {
 				.toString();
 	}
 
-	public static String getQueryAllMembros() {
-		
+	public static String getMembrosGrupoEscalados() {
 		return new StringBuilder()
-				.append(" from Pessoa as p")
-				.append(" where p.idPessoa =  ministerio.idMinisterio = :idMinisterio ")
+				.append(" select p.idpessoa as \"idPessoa\", p.nome, p.sobrenome ")
+				
+				
+				
+				.append(" ,case when ( ")
+				.append(" ( to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') >= e.data_inicial and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') <= e.data_final ) ")
+				.append(" or ( to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') <= e.data_inicial and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') >= e.data_final )")
+				.append(" or ( to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') < e.data_inicial and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') < e.data_final and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') > e.data_inicial ) ")
+				.append(" or ( to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') > e.data_inicial and to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') < e.data_final and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') > e.data_final ) ")
+				.append(" ) then true else false end as \"escaladoGrupoAtual\" ")
+				
+				
+				
+				.append(" ,case when exists (select * from escala es ")
+				.append(" inner join vinculo_pessoa_grupo vpg on(vpg.idvinculo_pessoa_grupo = es.vinculo_pessoa_grupo_idvinculo_pessoa_grupo) ")
+				.append(" where ( ")
+				.append(" ( to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') >= es.data_inicial and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') <= es.data_final ) ")
+				.append(" or ( to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') <= es.data_inicial and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') >= es.data_final ) ")
+				.append(" or ( to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') < es.data_inicial and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') < es.data_final and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') > es.data_inicial ) ")
+				.append(" or ( to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') > es.data_inicial and to_timestamp( :dataInicial , 'YYYY-MM-DD HH24:MI:SS') < es.data_final and to_timestamp( :dataFinal , 'YYYY-MM-DD HH24:MI:SS') > es.data_final ) ") 
+				.append(" ) and vpg.pessoa_idpessoa = v.pessoa_idpessoa and vpg.grupo_idgrupo != v.grupo_idgrupo ")
+				.append(" ) then true else false end as \"escaladoOutroGrupo\" ")
+				
+				
+				
+				
+				
+				.append(" from pessoa p ")
+				.append(" inner join vinculo_pessoa_grupo v on(v.pessoa_idpessoa = p.idpessoa) ")
+				.append(" inner join grupo g on (g.idgrupo = v.grupo_idgrupo) ")
+				.append(" inner join ministerio m on(m.idministerio = g.ministerio_idministerio) ")
+				.append(" left join escala e on(e.vinculo_pessoa_grupo_idvinculo_pessoa_grupo = v.idvinculo_pessoa_grupo) ")
+				.append(" where v.grupo_idgrupo = :idGrupo and v.ativo = true and v.classificacao_membro_idclassificacao_membro = :idClassificacaoMembro ")
+				.append(" ORDER BY p.nome ASC ")
 				.toString();
-	}
-
-	public static String getSQLMembrosGrupo() {
-		return new StringBuilder()
-			.append(" SELECT p.idpessoa as \"idPessoa\", p.nome, p.sobrenome,")
-			.append("CASE WHEN EXISTS( ")
-			.append("SELECT * FROM escala e ")
-			.append("INNER JOIN vinculo_pessoa_grupo vg ON(v.idvinculo_pessoa_grupo = e.vinculo_pessoa_grupo_idvinculo_pessoa_grupo) ")
-			.append("WHERE e.vinculo_pessoa_grupo_idvinculo_pessoa_grupo = v.grupo_idgrupo ")
-			.append(") THEN true ELSE false END AS \"escaladoVinculado\" ")
-			.append("FROM pessoa p ")
-			.append("INNER JOIN vinculo_pessoa_grupo v ON (v.pessoa_idpessoa = p.idpessoa) ")
-			.append("WHERE v.grupo_idgrupo = :idGrupo ")
-			.append("ORDER BY p.nome ASC ")
-			.toString();
 	}
 	
 	public static String getQueryCountMembros() {
@@ -71,29 +87,19 @@ public class GrupoQuery {
 	
 	public static String getQueryPessoasVinculo() {
 		return new StringBuilder()
-			.append(" SELECT p.idpessoa, p.nome, p.sobrenome, ")
-			.append(" 		CASE WHEN v.grupo_idgrupo = :idGrupo AND v.ativo AND g.ministerio_idministerio = :idMinisterio")
-			.append(" 		THEN true ELSE false END AS ativo ")
-			.append("   FROM pessoa p ")
-			.append(" LEFT JOIN vinculo_pessoa_grupo v ON (v.pessoa_idpessoa = p.idpessoa) ")
-			.append(" LEFT JOIN grupo g ON (g.idgrupo = v.grupo_idgrupo) ")
+			.append(" SELECT p.idpessoa as \"idPessoa\", p.nome, p.sobrenome, ")
+			.append(" 		CASE WHEN EXISTS( ") 
+			.append(" 		SELECT * FROM vinculo_pessoa_grupo v ")
+			.append(" 		INNER JOIN grupo g ON (g.idgrupo = v.grupo_idgrupo) ")
+			.append(" 		WHERE v.pessoa_idpessoa = p.idpessoa ")
+			.append(" 		AND v.grupo_idgrupo = :idGrupo")
+			.append(" 		AND g.ministerio_idministerio = :idMinisterio")
+			.append(" 		AND classificacao_membro_idclassificacao_membro = :idClassificacaoMembro")
+			.append(" 		AND v.ativo = true ")
+			.append("   )THEN true ELSE false END AS ativo ")
+			.append(" FROM pessoa p ")
 			.append(" ORDER BY p.nome ASC ")
 			.toString();
-//		return new StringBuilder()
-//				.append("SELECT p.idpessoa as \"idPessoa\", p.nome, p.sobrenome, ")
-//				.append("	CASE WHEN EXISTS( ")
-//				.append("		SELECT * FROM vinculo_pessoa_grupo v ")
-//				.append("		INNER JOIN grupo g ON (g.idgrupo = v.grupo_idgrupo ) ")
-//				.append("		INNER JOIN pessoa pa ON (pa.idpessoa = v.pessoa_idpessoa) ")
-//				.append("		LEFT JOIN funcao_ministerial f ON (f.pessoa_idpessoa = pa.idpessoa) ")
-//				.append("		WHERE v.pessoa_idpessoa = p.idpessoa ")
-//				.append("		AND v.grupo_idgrupo = :idGrupo ")
-//				.append("		AND g.ministerio_idministerio = :idMinisterio ")
-//				.append("		AND f.idfuncao_ministerial = :idFuncaoMinisterial ")
-//				.append("	) THEN true ELSE false END AS \"escaladoVinculado\" ")
-//				.append("FROM pessoa p ")
-//				.append("ORDER BY p.nome ASC ")
-//				.toString();
 	}
 	
 

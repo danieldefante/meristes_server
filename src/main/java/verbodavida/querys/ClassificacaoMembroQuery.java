@@ -10,6 +10,14 @@ public class ClassificacaoMembroQuery {
 				.toString();
 	}
 
+	public static String getQueryCountRegisters() {
+		
+		return new StringBuilder()
+				.append(" SELECT COUNT(*) FROM classificacao_membro ")
+				.append(" WHERE ministerio_idministerio = :idMinisterio")
+				.toString();
+	}
+
 	public static String getQuery() {
 		
 		return new StringBuilder()
@@ -19,12 +27,5 @@ public class ClassificacaoMembroQuery {
 				.toString();
 	}
 	
-	public static String getQueryCountRegisters() {
-		
-		return new StringBuilder()
-				.append(" SELECT COUNT(*) FROM classificacao_membro ")
-				.append(" WHERE ministerio_idministerio = :idMinisterio")
-				.toString();
-	}
 
 }

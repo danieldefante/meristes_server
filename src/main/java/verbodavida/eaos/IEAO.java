@@ -4,7 +4,9 @@ import static verbodavida.utils.PersistDB.deleteEntity;
 import static verbodavida.utils.PersistDB.findAllEntity;
 import static verbodavida.utils.PersistDB.findEntity;
 import static verbodavida.utils.PersistDB.insertEntity;
+import static verbodavida.utils.PersistDB.insertListEntitys;
 import static verbodavida.utils.PersistDB.updateEntity;
+import static verbodavida.utils.PersistDB.updateListEntitys;
 
 import java.util.List;
 
@@ -78,21 +80,25 @@ public class IEAO {
 	
 	
 	
+	//COMUN
 	
-	
-	public <T> String insert(T entity) {
+	public <T> Long insert(T entity) {
 		return insertEntity(entity);
 	}
 
-	public <T> String insertList(List<T> entitys) {
-		return insertList(entitys);
+	public <T> Boolean insertList(List<T> entitys) {
+		return insertListEntitys(entitys);
 	}
 
-	public <T> String update(T entity) {
+	public <T> Boolean update(T entity) {
 		return updateEntity(entity);
 	}
 
-	public String delete(Long id) {
+	public <T> Boolean updateList(List<T> entitys) {
+		return updateListEntitys(entitys);
+	}
+
+	public Boolean delete(Long id) {
 		return deleteEntity(id);
 	}
 	

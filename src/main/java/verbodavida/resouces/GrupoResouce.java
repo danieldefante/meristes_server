@@ -1,7 +1,5 @@
 package verbodavida.resouces;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -75,39 +73,27 @@ public class GrupoResouce extends GerericResouce<GrupoDTO, GrupoVO>{
 	}
 	
 	@POST
-	@Path("/{idGrupo}/funcaoministerial/{idFuncaoMinisterial}/vincularpessoas")
+	@Path("/{idGrupo}/classificacaomembro/{idClassificacaoMembro}/vincularpessoa")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String vincularPessoas(@PathParam("idMinisterio") Long idMinisterio, 
 								  @PathParam("idGrupo") Long idGrupo, 
-								  @PathParam("idFuncaoMinisterial") Long idFuncaoMinisterial,
-								  List<PessoaVO> pessoaVOList) {
+								  @PathParam("idClassificacaoMembro") Long idClassificacaoMembro,
+								  PessoaVO pessoaVO) {
 		
-		return grupoServiceImpl.vincularPessoas(idMinisterio, idGrupo, idFuncaoMinisterial, pessoaVOList);
+		return grupoServiceImpl.vincularPessoa(idMinisterio, idGrupo, idClassificacaoMembro, pessoaVO);
 	}
 	
     @GET
-	@Path("/{idGrupo}/membros")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public PagedResult<PessoaVO> findAllMembros(@QueryParam("page") int page,
-									  			@QueryParam("size") int size,
-									  			@PathParam("idMinisterio") Long idMinisterio,
-									  			@PathParam("idGrupo") Long idGrupo) {
-			
-    	return grupoServiceImpl.pagedMembros(page, size, idMinisterio, idGrupo);
-	}
-    
-    @GET
-	@Path("/{idGrupo}/pessoasvinculo/funcaoministerial/{idFuncaoMinisterial}")
+	@Path("/{idGrupo}/pessoasvinculo/classificacaomembro/{idClassificacaoMembro}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public PagedResult<PessoaVO> findAllPessoasVinculo(@QueryParam("page") int page,
 									  				   @QueryParam("size") int size,
 									  				   @PathParam("idMinisterio") Long idMinisterio,
 									  				   @PathParam("idGrupo") Long idGrupo,
-    												   @PathParam("idFuncaoMinisterial") Long idFuncaoMinisterial) {
+    												   @PathParam("idClassificacaoMembro") Long idClassificacaoMembro) {
 			
-    	return grupoServiceImpl.pagedPessoasVinculo(page, size, idMinisterio, idGrupo, idFuncaoMinisterial);
+    	return grupoServiceImpl.pagedPessoasVinculo(page, size, idMinisterio, idGrupo, idClassificacaoMembro);
 	}
 }

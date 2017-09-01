@@ -15,10 +15,10 @@ import javax.ws.rs.core.UriInfo;
 
 import verbodavida.dtos.MinisterioDTO;
 import verbodavida.resouceconfig.GerericResouce;
-import verbodavida.service.impl.FuncaoMinisterialServiceImpl;
+import verbodavida.service.impl.ClassificacaoMembroServiceImpl;
 import verbodavida.service.impl.MinisterioServiceImpl;
 import verbodavida.utils.PagedResult;
-import verbodavida.vos.FuncaoMinisterialVO;
+import verbodavida.vos.ClassificacaoMembroVO;
 import verbodavida.vos.MinisterioVO;
 
 @Path(MinisterioResouce.PATH)
@@ -80,25 +80,25 @@ public class MinisterioResouce extends GerericResouce<MinisterioDTO, MinisterioV
     }
     
     @GET
-    @Path("/{idMinisterio}/funcaoministerial/pessoa/{idPessoa}")
+    @Path("/{idMinisterio}/classificacaomembro/pessoa/{idPessoa}")
  	@Consumes(MediaType.APPLICATION_JSON)
  	@Produces(MediaType.APPLICATION_JSON)
-	public PagedResult<FuncaoMinisterialVO> pagedFuncaoMinisterial(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio, @PathParam("idPessoa") Long idPessoa) {
+	public PagedResult<ClassificacaoMembroVO> pagedClassificacaoMembroPessoa(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio, @PathParam("idPessoa") Long idPessoa) {
 	 	
-		FuncaoMinisterialServiceImpl funcaoMinisterialServiceImpl = new FuncaoMinisterialServiceImpl();
+		ClassificacaoMembroServiceImpl classificacaoMembroServiceImpl = new ClassificacaoMembroServiceImpl();
 	 	
-		return funcaoMinisterialServiceImpl.findPaged(page, size, idMinisterio, idPessoa);
+		return classificacaoMembroServiceImpl.findPaged(page, size, idMinisterio, idPessoa);
 	}
     
     @GET
-    @Path("/{idMinisterio}/funcoesministerio")
+    @Path("/{idMinisterio}/classificacaomembro")
  	@Consumes(MediaType.APPLICATION_JSON)
  	@Produces(MediaType.APPLICATION_JSON)
-     public PagedResult<FuncaoMinisterialVO> pagedFuncoesMinistero(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio ) {
+    public PagedResult<ClassificacaoMembroVO> pagedClassificacaomembro(@QueryParam("page") int page, @QueryParam("size") int size, @PathParam("idMinisterio") Long idMinisterio ) {
      	
-    	FuncaoMinisterialServiceImpl funcaoMinisterialServiceImpl = new FuncaoMinisterialServiceImpl();
+    	ClassificacaoMembroServiceImpl classificacaoMembroServiceImpl = new ClassificacaoMembroServiceImpl();
      	
-    	return funcaoMinisterialServiceImpl.findPaged(page, size, idMinisterio);
+    	return classificacaoMembroServiceImpl.findPaged(page, size, idMinisterio);
      }
 
 }

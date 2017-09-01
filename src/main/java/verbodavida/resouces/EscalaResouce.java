@@ -12,6 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import verbodavida.dtos.EscalaDTO;
+import verbodavida.dtos.PessoaEscaladaDTO;
 import verbodavida.resouceconfig.GerericResouce;
 import verbodavida.service.impl.EscalaServiceImpl;
 import verbodavida.utils.PagedResult;
@@ -70,5 +71,19 @@ public class EscalaResouce extends GerericResouce<EscalaDTO, EscalaVO> {
 	public String delete(@PathParam("idEscala") Long idEscala) {
 		
 		return escalaServiceImpl.delete(idEscala);
+	}
+	
+    @POST
+	@Path("/membros")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public PagedResult<PessoaEscaladaDTO> findAllMembrosFromEscala(@QueryParam("page") int page,
+									  					  @QueryParam("size") int size,
+									  					  @PathParam("idMinisterio") Long idMinisterio,
+									  					  @PathParam("idGrupo") Long idGrupo,
+									  					  PessoaEscaladaDTO pessoaEscaladaDTO) {
+    	
+		
+    	return escalaServiceImpl.pagedMembrosFromEscala(page, size, idMinisterio, idGrupo, pessoaEscaladaDTO);
 	}
 }

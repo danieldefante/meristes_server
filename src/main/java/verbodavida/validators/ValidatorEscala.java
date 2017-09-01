@@ -4,13 +4,13 @@ import verbodavida.eaos.EscalaEAO;
 import verbodavida.entities.Escala;
 import verbodavida.utils.VDVException;
 
-public class ValidadorEscala implements IValidador {
+public class ValidatorEscala implements IValidador<Escala> {
 
 	EscalaEAO escalaEAO = new EscalaEAO();
 	
 	Escala escala = new Escala();
 	
-	public ValidadorEscala(Escala escala) {
+	public ValidatorEscala(Escala escala) {
 		this.escala = escala;
 	}
 	
@@ -24,16 +24,15 @@ public class ValidadorEscala implements IValidador {
 //		}
 	}
 	
-	@Override
-	public <T> Boolean camposObrigatorios(T entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 	public static void main(String[] args) {
 		throw new VDVException("dsadssdad");
 				
 		
+	}
+
+	@Override
+	public Boolean camposObrigatorios(Escala entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

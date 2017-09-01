@@ -3,6 +3,11 @@ package verbodavida.service.impl;
 import static verbodavida.dtos.ConverterEntity.converterDTO;
 import static verbodavida.querys.PessoaQuery.getPaged;
 import static verbodavida.querys.PessoaQuery.getQueryCountRegisters;
+import static verbodavida.utils.CrudRespost.respost;
+import static verbodavida.utils.EnumVDVException.PESSOA_DELETE_ERROR;
+import static verbodavida.utils.EnumVDVException.PESSOA_DELETE_SUCCESS;
+import static verbodavida.utils.EnumVDVException.PESSOA_SAVE_ERROR;
+import static verbodavida.utils.EnumVDVException.PESSOA_SAVE_SUCCESS;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -36,7 +41,7 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 	public PessoaDTO find(Long idPessoa) {
 		Pessoa pessoa = pessoaEAO.find(Pessoa.class, idPessoa);
 
-		if(!pessoa.equals(null)){
+		if(pessoa != null){
 			PessoaDTO pessoaDTO = converterDTO( PessoaDTO.class, pessoa);
 			
 			return pessoaDTO;
@@ -49,9 +54,10 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 	public String insert(PessoaDTO pessoaDTO) {
 		Pessoa pessoa = converterDTO(Pessoa.class, pessoaDTO);
 		
-		if(!pessoa.equals(null)){
+		if(pessoa != null){
 			
-			return pessoaEAO.insert(pessoa);
+			Long respost = pessoaEAO.insert(pessoa);
+			return respost != null ? respost(PESSOA_SAVE_SUCCESS.getMsg(), true, respost) : respost(PESSOA_SAVE_ERROR.getMsg(), false, respost);
 		}else {
 			throw new VDVException("Erro ao inserir pessoa.");
 		}
@@ -61,9 +67,10 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 	public String update(PessoaDTO pessoaDTO) {
 		Pessoa pessoa = converterDTO(Pessoa.class, pessoaDTO);
 		
-		if(!pessoa.equals(null)){
+		if(pessoa != null){
 			
-			return pessoaEAO.update(pessoa);
+			Boolean respost = pessoaEAO.update(pessoa);
+			return respost == true ? respost(PESSOA_SAVE_SUCCESS.getMsg(), respost, null) : respost(PESSOA_SAVE_ERROR.getMsg(), respost, null);
 		}else {
 			throw new VDVException("Erro ao atualizar pessoa.");
 		}
@@ -73,8 +80,9 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 	public String delete(Long idPessoa) {
 		Pessoa pessoa = pessoaEAO.find(Pessoa.class, idPessoa);
 		
-		if(!pessoa.equals(null)){
-			return pessoaEAO.delete(idPessoa);
+		if(pessoa != null){
+			Boolean respost =  pessoaEAO.delete(idPessoa);
+			return respost == true ? respost(PESSOA_DELETE_SUCCESS.getMsg(), respost, null) : respost(PESSOA_DELETE_ERROR.getMsg(), respost, null);
 		}else {
 			throw new VDVException("Erro ao excluir pessoa.");
 		}
