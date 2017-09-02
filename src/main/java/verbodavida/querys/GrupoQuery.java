@@ -38,7 +38,7 @@ public class GrupoQuery {
 
 	public static String getMembrosGrupoEscalados() {
 		return new StringBuilder()
-				.append(" select p.idpessoa as \"idPessoa\", p.nome, p.sobrenome ")
+				.append(" select p.idpessoa as \"idPessoa\", p.nome, p.sobrenome, v.idvinculo_pessoa_grupo as \"idVinculoPessoaGrupo\" ")
 				
 				
 				

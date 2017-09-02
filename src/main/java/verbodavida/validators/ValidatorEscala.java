@@ -8,13 +8,7 @@ public class ValidatorEscala implements IValidador<Escala> {
 
 	EscalaEAO escalaEAO = new EscalaEAO();
 	
-	Escala escala = new Escala();
-	
-	public ValidatorEscala(Escala escala) {
-		this.escala = escala;
-	}
-	
-	public void validarEscalaConflito(){
+	public void validarEscalaConflito(Escala escala){
 	
 //		Escala escala = escalaEAO.find(Escala.class, this.escala.getIdEscala());
 //		

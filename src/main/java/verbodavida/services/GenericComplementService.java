@@ -4,7 +4,7 @@ import java.util.List;
 
 import verbodavida.utils.PagedResult;
 
-public class GenericComplementService<T, R, K> {
+public class GenericComplementService<T, R> {
 
 	public List<R> findAll(){
 		return null;

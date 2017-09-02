@@ -2,6 +2,9 @@ package verbodavida.utils;
 
 public enum EnumVDVException {
 	ESCALA_EM_CONFLITO("DSFSDFSDF"),
+	ESCALA_SAVE_SUCCESS("Escala salva com Sucesso!"),
+	ESCALA_SAVE_ERROR("Erro ao cadastrar a Escala!"),
+	
 	MINISTERIO_SAVE_SUCCESS("O Ministério foi salvo com Sucesso!"),
 	MINISTERIO_SAVE_ERROR("Erro ao cadastrar o Ministério!"),
 	MINISTERIO_DELETE_SUCCESS("O Ministério foi excluído com Sucesso!"),
