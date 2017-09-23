@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
 public class Escala  implements java.io.Serializable {
 
 
-     private long idescala;
+     private Long idescala;
      private VinculoPessoaGrupo vinculoPessoaGrupo;
      private Date dataInicial;
      private Date dataFinal;
@@ -35,11 +35,11 @@ public class Escala  implements java.io.Serializable {
     }
 
 	
-    public Escala(long idescala, VinculoPessoaGrupo vinculoPessoaGrupo) {
+    public Escala(Long idescala, VinculoPessoaGrupo vinculoPessoaGrupo) {
         this.idescala = idescala;
         this.vinculoPessoaGrupo = vinculoPessoaGrupo;
     }
-    public Escala(long idescala, VinculoPessoaGrupo vinculoPessoaGrupo, Date dataInicial, Date dataFinal) {
+    public Escala(Long idescala, VinculoPessoaGrupo vinculoPessoaGrupo, Date dataInicial, Date dataFinal) {
        this.idescala = idescala;
        this.vinculoPessoaGrupo = vinculoPessoaGrupo;
        this.dataInicial = dataInicial;
@@ -50,11 +50,11 @@ public class Escala  implements java.io.Serializable {
 
      @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idescala", unique=true, nullable=false)
-    public long getIdescala() {
+    public Long getIdescala() {
         return this.idescala;
     }
     
-    public void setIdescala(long idescala) {
+    public void setIdescala(Long idescala) {
         this.idescala = idescala;
     }
 

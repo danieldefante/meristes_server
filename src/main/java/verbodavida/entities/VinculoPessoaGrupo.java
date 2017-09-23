@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
 public class VinculoPessoaGrupo  implements java.io.Serializable {
 
 
-     private long idvinculoPessoaGrupo;
+     private long idVinculoPessoaGrupo;
      private ClassificacaoMembro classificacaoMembro;
      private Grupo grupo;
      private Pessoa pessoa;
@@ -42,13 +42,13 @@ public class VinculoPessoaGrupo  implements java.io.Serializable {
 
 	
     public VinculoPessoaGrupo(long idvinculoPessoaGrupo, ClassificacaoMembro classificacaoMembro, Grupo grupo, Pessoa pessoa) {
-        this.idvinculoPessoaGrupo = idvinculoPessoaGrupo;
+        this.idVinculoPessoaGrupo = idvinculoPessoaGrupo;
         this.classificacaoMembro = classificacaoMembro;
         this.grupo = grupo;
         this.pessoa = pessoa;
     }
     public VinculoPessoaGrupo(long idvinculoPessoaGrupo, ClassificacaoMembro classificacaoMembro, Grupo grupo, Pessoa pessoa, Date dataVinculacao, Boolean ativo, Set<Escala> escalas) {
-       this.idvinculoPessoaGrupo = idvinculoPessoaGrupo;
+       this.idVinculoPessoaGrupo = idvinculoPessoaGrupo;
        this.classificacaoMembro = classificacaoMembro;
        this.grupo = grupo;
        this.pessoa = pessoa;
@@ -61,12 +61,12 @@ public class VinculoPessoaGrupo  implements java.io.Serializable {
      @GeneratedValue(strategy = GenerationType.IDENTITY)
     
     @Column(name="idvinculo_pessoa_grupo", unique=true, nullable=false)
-    public long getIdvinculoPessoaGrupo() {
-        return this.idvinculoPessoaGrupo;
+    public long getIdVinculoPessoaGrupo() {
+        return this.idVinculoPessoaGrupo;
     }
     
-    public void setIdvinculoPessoaGrupo(long idvinculoPessoaGrupo) {
-        this.idvinculoPessoaGrupo = idvinculoPessoaGrupo;
+    public void setIdVinculoPessoaGrupo(long idVinculoPessoaGrupo) {
+        this.idVinculoPessoaGrupo = idVinculoPessoaGrupo;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)

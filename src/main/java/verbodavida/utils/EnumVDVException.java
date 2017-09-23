@@ -22,6 +22,8 @@ public enum EnumVDVException {
 	GRUPO_SAVE_SUCCESS("A Pessoa foi vinculada com sucesso ao Ministério!"),
 	GRUPO_SAVE_ERROR("Erro ao vinculada a Pessoa ao Ministério!"),
 	
+	FIELDS_OBRIGATORIOS("Existe campos Obrigatórios não preenchidos!"),
+	
 	
 	
 	;

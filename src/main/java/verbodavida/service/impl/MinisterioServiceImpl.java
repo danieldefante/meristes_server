@@ -13,6 +13,8 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 
+import javax.ws.rs.core.Response.Status;
+
 import verbodavida.dtos.MinisterioDTO;
 import verbodavida.eaos.MinisterioEAO;
 import verbodavida.entities.ClassificacaoMembro;
@@ -20,8 +22,8 @@ import verbodavida.entities.Grupo;
 import verbodavida.entities.Ministerio;
 import verbodavida.services.MinisterioService;
 import verbodavida.utils.BeanConsultGroup;
+import verbodavida.utils.OQJFException;
 import verbodavida.utils.PagedResult;
-import verbodavida.utils.VDVException;
 import verbodavida.vos.MinisterioVO;
 
 public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, MinisterioVO> {
@@ -42,7 +44,7 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 			return respost != null ? respost(MINISTERIO_SAVE_SUCCESS.getMsg(), true, respost) : respost(MINISTERIO_SAVE_ERROR.getMsg(), false, respost);
 		}
 
-			throw new VDVException("Erro ao inserir ministério.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao inserir ministério.");
 	}
 
 	@Override
@@ -59,11 +61,11 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 				return respost == true ? respost(MINISTERIO_SAVE_SUCCESS.getMsg(), respost, null) : respost(MINISTERIO_SAVE_ERROR.getMsg(), respost, null);
 			}else {
 				
-				throw new VDVException("Erro ao atualizar ministério.");
+				throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao atualizar ministério.");
 			}
 			
 		} else {
-			throw new VDVException("Erro ao atualizar ministério.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao atualizar ministério.");
 		}
 		
 	}
@@ -78,7 +80,7 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 			Boolean respost = ministerioEAO.delete(idMinisterio);
 			return respost == true ? respost(MINISTERIO_DELETE_SUCCESS.getMsg(), respost, null) : respost(MINISTERIO_DELETE_ERROR.getMsg(), respost, null);
 		}else {
-			throw new VDVException("Erro ao excluir ministério.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao excluir ministério.");
 		}
 	}
 
@@ -92,7 +94,7 @@ public class MinisterioServiceImpl extends MinisterioService<MinisterioDTO, Mini
 			return converterDTO(MinisterioDTO.class, ministerio);
 		}else {
 			
-			throw new VDVException("Erro ao buscar ministério.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao buscar ministério.");
 		}
 	}
 

@@ -10,6 +10,8 @@ import static verbodavida.utils.EnumVDVException.ESCALA_SAVE_SUCCESS;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.ws.rs.core.Response.Status;
+
 import verbodavida.dtos.EscalaDTO;
 import verbodavida.eaos.EscalaEAO;
 import verbodavida.eaos.VinculoPessoaGrupoEAO;
@@ -18,7 +20,7 @@ import verbodavida.entities.VinculoPessoaGrupo;
 import verbodavida.services.EscalaService;
 import verbodavida.utils.BeanConsultGroup;
 import verbodavida.utils.PagedResult;
-import verbodavida.utils.VDVException;
+import verbodavida.utils.OQJFException;
 import verbodavida.validators.ValidatorEscala;
 import verbodavida.vos.EscalaVO;
 
@@ -44,6 +46,7 @@ public class EscalaServiceImpl extends EscalaService<EscalaDTO, EscalaVO> {
 		
 		Escala escala = resolverEscalaDTO(escalaDTO);
 
+		validatorEscala.fieldsRequireds(escala);
 		validatorEscala.validarEscalaConflito(escala);
 		
 		Long respost = escalaEAO.insert(escala);
@@ -74,6 +77,7 @@ public class EscalaServiceImpl extends EscalaService<EscalaDTO, EscalaVO> {
 //		return null;
 //	}
 //
+//	nha
 	@Override
 	public String delete(Long idEscala) {
 		System.out.println(idEscala);
@@ -98,7 +102,7 @@ public class EscalaServiceImpl extends EscalaService<EscalaDTO, EscalaVO> {
 			
 			return new PagedResult<EscalaDTO>(sizeBD, escalaDTOList);
 		} else {
-			throw new VDVException("Erro ao encontar membros.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR,"Erro ao encontar membros.");
 		}
 	}
 	

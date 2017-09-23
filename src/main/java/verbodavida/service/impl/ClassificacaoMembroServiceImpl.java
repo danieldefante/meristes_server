@@ -7,12 +7,14 @@ import static verbodavida.querys.ClassificacaoMembroQuery.getQueryCountRegisters
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.ws.rs.core.Response.Status;
+
 import verbodavida.dtos.ClassificacaoMembroDTO;
 import verbodavida.eaos.ClassificacaoMembroEAO;
 import verbodavida.services.ClassificacaoMembroService;
 import verbodavida.utils.BeanConsultGroup;
 import verbodavida.utils.PagedResult;
-import verbodavida.utils.VDVException;
+import verbodavida.utils.OQJFException;
 import verbodavida.vos.ClassificacaoMembroVO;
 
 public class ClassificacaoMembroServiceImpl extends ClassificacaoMembroService<ClassificacaoMembroDTO, ClassificacaoMembroVO> {
@@ -33,7 +35,7 @@ public class ClassificacaoMembroServiceImpl extends ClassificacaoMembroService<C
 		if (classificacaoMembroVOList != null && sizeDB != null){
 			return new PagedResult<ClassificacaoMembroVO>(sizeDB, classificacaoMembroVOList);
 		} else {
-			throw new VDVException("Erro ao buscar classificacao de membros.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR,"Erro ao buscar classificacao de membros.");
 		}
 	}
 	

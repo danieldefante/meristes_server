@@ -12,13 +12,15 @@ import static verbodavida.utils.EnumVDVException.PESSOA_SAVE_SUCCESS;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.ws.rs.core.Response.Status;
+
 import verbodavida.dtos.PessoaDTO;
 import verbodavida.eaos.PessoaEAO;
 import verbodavida.entities.Pessoa;
 import verbodavida.services.PessoaService;
 import verbodavida.utils.BeanConsultGroup;
+import verbodavida.utils.OQJFException;
 import verbodavida.utils.PagedResult;
-import verbodavida.utils.VDVException;
 import verbodavida.vos.PessoaVO;
 
 public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
@@ -46,7 +48,7 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 			
 			return pessoaDTO;
 		}else {
-			throw new VDVException("Erro ao buscar pessoa.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao buscar pessoa.");
 		}
 	}
 
@@ -59,7 +61,7 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 			Long respost = pessoaEAO.insert(pessoa);
 			return respost != null ? respost(PESSOA_SAVE_SUCCESS.getMsg(), true, respost) : respost(PESSOA_SAVE_ERROR.getMsg(), false, respost);
 		}else {
-			throw new VDVException("Erro ao inserir pessoa.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao inserir pessoa.");
 		}
 	}
 
@@ -72,7 +74,7 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 			Boolean respost = pessoaEAO.update(pessoa);
 			return respost == true ? respost(PESSOA_SAVE_SUCCESS.getMsg(), respost, null) : respost(PESSOA_SAVE_ERROR.getMsg(), respost, null);
 		}else {
-			throw new VDVException("Erro ao atualizar pessoa.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao atualizar pessoa.");
 		}
 	}
 
@@ -84,7 +86,7 @@ public class PessoaServiceImpl extends PessoaService<PessoaDTO, PessoaVO> {
 			Boolean respost =  pessoaEAO.delete(idPessoa);
 			return respost == true ? respost(PESSOA_DELETE_SUCCESS.getMsg(), respost, null) : respost(PESSOA_DELETE_ERROR.getMsg(), respost, null);
 		}else {
-			throw new VDVException("Erro ao excluir pessoa.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao excluir pessoa.");
 		}
 	}
 

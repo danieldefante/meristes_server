@@ -17,6 +17,8 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.ws.rs.core.Response.Status;
+
 import verbodavida.dtos.GrupoDTO;
 import verbodavida.eaos.ClassificacaoMembroEAO;
 import verbodavida.eaos.GrupoEAO;
@@ -31,7 +33,7 @@ import verbodavida.querys.PessoaQuery;
 import verbodavida.services.GrupoService;
 import verbodavida.utils.BeanConsultGroup;
 import verbodavida.utils.PagedResult;
-import verbodavida.utils.VDVException;
+import verbodavida.utils.OQJFException;
 import verbodavida.vos.GrupoVO;
 import verbodavida.vos.PessoaVO;
 
@@ -48,7 +50,7 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 			GrupoDTO grupoDTO = converterDTO(GrupoDTO.class, grupo); 
 			return grupoDTO;
 		}else {
-			throw new VDVException("Erro ao buscar grupo.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR,"Erro ao buscar grupo.");
 		}
 		
 	}
@@ -74,7 +76,7 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 			
 			return retorno != null ? "true":"false";
 		}else{
-			throw new VDVException("Erro ao inserir grupo.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao inserir grupo.");
 		}
 	}
 
@@ -87,7 +89,7 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 			Boolean retorno =  grupoEAO.update(grupo);
 			return retorno ? "true": "false";
 		}else{
-			throw new VDVException("Erro ao atualizar grupo.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao atualizar grupo.");
 		}
 	}
 
@@ -101,7 +103,7 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 
 			return retorno ? "true": "false";
 		}else {
-			throw new VDVException("Erro ao deletar grupo.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao deletar grupo.");
 		}
 	}
 
@@ -117,7 +119,7 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 			return retorno ? "true": "false";
 			
 		}else{
-			throw new VDVException("Erro ao inserir grupos.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao inserir grupos.");
 		}
 	}
 
@@ -168,11 +170,11 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 				}
 				
 			} else {
-				throw new VDVException("Erro ao encontrar pessoa.");
+				throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao encontrar pessoa.");
 			}
 			
 		} else {
-			throw new VDVException("Dados inválidos!");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Dados inválidos!");
 		}
 		return null;
 	}
@@ -190,7 +192,7 @@ public class GrupoServiceImpl extends GrupoService<GrupoDTO, GrupoVO> {
 			
 			return new PagedResult<PessoaVO>(sizeBD, pessoaVOList);
 		} else {
-			throw new VDVException("Erro ao encontar membros.");
+			throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Erro ao encontar membros.");
 		}
 	}
 }

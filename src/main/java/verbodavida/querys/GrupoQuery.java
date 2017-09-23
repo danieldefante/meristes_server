@@ -101,7 +101,5 @@ public class GrupoQuery {
 			.append(" ORDER BY p.nome ASC ")
 			.toString();
 	}
-	
-
 
 }

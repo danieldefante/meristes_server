@@ -246,36 +246,36 @@ public class PersistDB {
 		return list;
 	}
 	
-//	public static <T> List<T> executeSQL(String sql, List<String> nameParams, List<Object> valueParam) {
-//		
-//		Session session = null;
-//		List<T> list = null;
-//        try {
-//
-//            session = HibernateUtil.getSessionFactory().openSession();
-//            
-//            Query query = session.createNativeQuery(sql);
-//            
-//            if (nameParams != null) {
-//            
-//            	int sizeListParams = nameParams.size();
-//				for (int i = 0; i < sizeListParams; i++) {
-//					
-//					query.setParameter(nameParams.get(i), valueParam.get(i));
-//				}
-//            }
-//
-//            list = query.list();
-//
-//        } catch (Exception e) {
-//            System.out.println("ERROR PersistDB -> " + e);
-//        } finally {
-//            session.clear();
-//            session.close();
-//        }
-//		
-//		return list;
-//	}
+	public static <T> List<T> executeHQL(Class<T> clazz, String sql, List<String> nameParams, List<Object> valueParam) {
+		
+		Session session = null;
+		List<T> list = null;
+        try {
+
+            session = HibernateUtil.getSessionFactory().openSession();
+            
+            Query<T> query = session.createQuery(sql, clazz);
+            
+            if (nameParams != null) {
+            
+            	int sizeListParams = nameParams.size();
+				for (int i = 0; i < sizeListParams; i++) {
+					
+					query.setParameter(nameParams.get(i), valueParam.get(i));
+				}
+            }
+
+			list = query.list();
+
+        } catch (Exception e) {
+            System.out.println("ERROR PersistDB -> " + e);
+        } finally {
+            session.clear();
+            session.close();
+        }
+		
+		return list;
+	}
 
 
 	@SuppressWarnings("deprecation")
@@ -551,6 +551,7 @@ public class PersistDB {
 //		return entity;
 //	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T> T executeHQLOneResult(String sql, List<String> namesParamList, List<Object> valuesParamList) {
 		
 		Session session = null;
@@ -581,6 +582,39 @@ public class PersistDB {
 		}
 		
 		return respost;
+	}
+
+	@SuppressWarnings("deprecation")
+	public static <T> List<T> executeSQLReturnList(Class<T> clazz, String sql, List<String> namesParamList, List<Object> valuesParamList) {
+		Session session = null;
+		List<T> list = null;
+		try {
+			
+			session = HibernateUtil.getSessionFactory().openSession();
+			
+			@SuppressWarnings("unchecked")
+			Query<T> query = session.createSQLQuery(sql).setResultTransformer( Transformers.aliasToBean(clazz));
+			
+			if(namesParamList != null){
+				
+				int sizeListParams = namesParamList.size();
+				
+				for (int i = 0; i < sizeListParams; i++) {
+					
+					query.setParameter(namesParamList.get(i), valuesParamList.get(i));
+				}
+			}
+			
+			list = query.setResultTransformer(Transformers.aliasToBean(clazz)).list();
+			
+		} catch (Exception e) {
+			System.out.println("ERROR PersistDB -> " + e);
+		} finally {
+			session.clear();
+			session.close();
+		}
+		
+		return list;
 	}
 	
 	

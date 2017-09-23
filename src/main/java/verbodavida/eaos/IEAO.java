@@ -59,6 +59,16 @@ public class IEAO {
 		return PersistDB.executeSQLOneResult(clazz, sql, namesParamList,  valuesParamList);
 	}
 
+	public <T> List<T> executeSQLResultList(Class<T> clazz, String sql, List<String> namesParamList, List<Object> valuesParamList) {
+		return PersistDB.executeSQLReturnList(clazz, sql, namesParamList,  valuesParamList);
+	}
+	
+	///HQLa
+	
+	public <T> List<T> executeHQLResultList(Class<T> clazz, String sql, List<String> namesParamList, List<Object> valuesParamList) {
+		return PersistDB.executeHQL(clazz, sql, namesParamList,  valuesParamList);
+	}
+
 
 //	public Object executeSQL(String sql, List<String> namesParamList, List<Object> valuesParamList) {
 //		return PersistDB.executeSQL( sql,  namesParamList,  valuesParamList);

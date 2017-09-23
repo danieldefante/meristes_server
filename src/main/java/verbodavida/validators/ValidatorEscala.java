@@ -1,32 +1,38 @@
 package verbodavida.validators;
 
+import java.util.List;
+
+import javax.ws.rs.core.Response.Status;
+
 import verbodavida.eaos.EscalaEAO;
 import verbodavida.entities.Escala;
-import verbodavida.utils.VDVException;
+import verbodavida.utils.OQJFException;
 
 public class ValidatorEscala implements IValidador<Escala> {
 
-	EscalaEAO escalaEAO = new EscalaEAO();
-	
-	public void validarEscalaConflito(Escala escala){
-	
-//		Escala escala = escalaEAO.find(Escala.class, this.escala.getIdEscala());
-//		
-//		if(escala != null){
-//			
-//			throw new VDVException("dsadssdad");
-//		}
-	}
-	
-	public static void main(String[] args) {
-		throw new VDVException("dsadssdad");
-				
+	public void validarEscalaConflito(Escala escala) {
+		EscalaEAO escalaEAO = new EscalaEAO();
 		
+		List<Escala> listEscalaConflito = escalaEAO.findConflito(escala.getVinculoPessoaGrupo().getIdVinculoPessoaGrupo(), 
+																 escala.getDataInicial(), 
+																 escala.getDataFinal());
+		
+		if(listEscalaConflito != null ){
+			
+			if(!listEscalaConflito.isEmpty()){
+				throw new OQJFException(Status.INTERNAL_SERVER_ERROR, "Escala em Conflito!");
+			}	
+		}
 	}
 
 	@Override
-	public Boolean camposObrigatorios(Escala entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public void fieldsRequireds(Escala escala) {
+
+		String[] nameFields = {"vinculoPessoaGrupo", "dataInicial", "dataFinal"};
+		
+		ValidatorFields.fieldsRequired(escala, nameFields);
+		
+
 	}
+
 }
